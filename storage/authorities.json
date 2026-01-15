@@ -1,0 +1,27 @@
+{
+  "ed97c82d-4d3c-43fa-8b22-722ff95b3ccf": {
+    "jti": "ed97c82d-4d3c-43fa-8b22-722ff95b3ccf",
+    "scope": "ops.write",
+    "issued_at": "2026-01-14T05:57:57.801831+00:00",
+    "consumed": false,
+    "revoked": false
+  },
+  "ca48a311-d1e1-4758-bd8e-9e08995596fd": {
+    "jti": "ca48a311-d1e1-4758-bd8e-9e08995596fd",
+    "issuer": "root.system",
+    "scope": "ops.read",
+    "issued_at": "2026-01-14T08:53:09.368560+00:00",
+    "expires_at": "2026-01-14T08:58:09.368560+00:00",
+    "consumed": true,
+    "revoked": false
+  },
+  "97d4a6e0-895c-4a3d-aa70-add8d2f50657": {
+    "jti": "97d4a6e0-895c-4a3d-aa70-add8d2f50657",
+    "issuer": "root.system",
+    "scope": "ops.read",
+    "issued_at": "2026-01-14T09:01:15.932419+00:00",
+    "expires_at": "2026-01-14T09:06:15.932419+00:00",
+    "consumed": true,
+    "revoked": false
+  }
+}

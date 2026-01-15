@@ -1,0 +1,28 @@
+[
+  {
+    "version": "v1",
+    "jti": "ce44522a-c8d2-4ec2-9c17-d8f0823cc795",
+    "issuer": "AION_ROOT",
+    "scope": "ops.deploy",
+    "issued_at": "2026-01-12T18:14:27.266663+00:00",
+    "expires_at": 1768242267.266663,
+    "revoked": true,
+    "consumed": false,
+    "recorded_at": "2026-01-12T18:14:27.266663+00:00",
+    "prev_hash": "GENESIS",
+    "hash": "5f3cb6843c2a8bbb28df5fdadc3106fa09d9198c6cdd239a85e44e0fce04f203"
+  },
+  {
+    "version": "v1",
+    "jti": "3f10fa1f-99f4-4e8b-b25a-186b76136ba2",
+    "issuer": "AION_ROOT",
+    "scope": "ops.deploy",
+    "issued_at": "2026-01-13T07:44:04.604652+00:00",
+    "expires_at": 1768290844.604652,
+    "revoked": false,
+    "consumed": false,
+    "recorded_at": "2026-01-13T07:44:04.604652+00:00",
+    "prev_hash": "5f3cb6843c2a8bbb28df5fdadc3106fa09d9198c6cdd239a85e44e0fce04f203",
+    "hash": "cdbc5be3d89e0bfaddb669edde03e059fb19192c8a2f9b7cf9ca76a70f96fa14"
+  }
+]

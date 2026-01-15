@@ -1,0 +1,291 @@
+[
+  {
+    "jti": "ec0f51d9-03ad-4882-8e99-f9088f59ad65",
+    "authority_id": "962e0603-d944-4e95-b0b7-f109b2a7efad",
+    "issued_at": "2026-01-09T15:53:35.005258+00:00",
+    "expires_at": "2026-01-09T16:03:35.005258+00:00",
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "public_key": "AION_ROOT_PUBLIC",
+    "signature": "kHfBnIbEUkq4QooOt8EVcgBajEspfyxG5PIXcSY1T3Kdlmk7vNvAi9Ghc1FqWFQIRu/87ehsu7Qr8guz/qzMCQ==",
+    "consumed": true
+  },
+  {
+    "jti": "3c5f17c2-8e3d-444c-bb07-cec878bd95af",
+    "authority_id": "110ed295-f116-4d2d-93fb-b06c467717d8",
+    "issued_at": "2026-01-09T16:12:05.284217+00:00",
+    "expires_at": "2026-01-09T16:22:05.284217+00:00",
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "public_key": "AION_ROOT_PUBLIC",
+    "signature": "Rf9vOeyrIomPQwUNvPoyWkuSMUYq+w1FOoh468lKzF7BGRJQkvoc42kEVw5M9sGV9Ypvy93N7i66kiQP4aGBDw=="
+  },
+  {
+    "jti": "52be6c4c-e138-449f-a55a-a0e421187fb5",
+    "authority_id": "55721534-cd36-484d-a8ef-a0816014f42d",
+    "issued_at": "2026-01-09T16:14:37.619445+00:00",
+    "expires_at": "2026-01-09T16:24:37.619445+00:00",
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "public_key": "AION_ROOT_PUBLIC",
+    "signature": "mOzS/ezU5yHNq2pmlwXHPl6s1CTLYO0YXRCGs/ljv1j3GACStZwqD18tUcYm9hl7rH+x+zorAztCn1U5OE0GCQ==",
+    "revoked": true
+  },
+  {
+    "jti": "fee62e65-15b7-4d71-b047-fa10e2080562",
+    "authority_id": "af341c3f-b948-43c1-998c-44d7125accf5",
+    "issued_at": "2026-01-10T13:14:32.402007+00:00",
+    "expires_at": "2026-01-10T13:24:32.402007+00:00",
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "public_key": "AION_ROOT_PUBLIC",
+    "signature": "kg04qNZT+A9IBYkQ2rxbSvYG3pdzHxCZ2f4qc9f48M1KBABRNXr2HTUpIIDPmFJvTDYJq+O0bADVSAnwmVixDw==",
+    "consumed": true
+  },
+  {
+    "jti": "4cfd06e5-4d66-46d0-ac56-fd0a67ca3c7e",
+    "agent_id": "agent_001",
+    "action": "deploy",
+    "domain": "ops",
+    "level": 0,
+    "parent": null,
+    "expiry": 1768069782,
+    "issuer": "AION",
+    "revoked": false,
+    "signature": "9478eac1c47f21ad7af06f001894aa93dd968122a72519f5cb351fd03c1e872125eb85bcbc3524aaff3c95f183ae0451f6c807c016804bae21560cbd4da6675f14e8fe25956b3d82e2c6662bf70e93dafcc3182c28686886efe65e1e0117ae764ce231d1964b61d83322b147d41d02d6c34fa8939f30104c16d6b970ea618a20bf7632d04d69f3823079c3cf21a632dd5b0b19b5a1715dba5694c20c2599222eeae3cae999f7864be13cad38f787223890c0d0924cfd6c270f7ff3a36780b3fd767043838f86067cc899908ca6c0346e2983aea965f684790b2ce81bcf791f280a62d2bc3a495b9ad5846c08c71e38fa7bbfa64a6d321127896c69aff57dd492",
+    "consumed": true
+  },
+  {
+    "jti": "0b0b769d-a699-4aec-be2c-c8e7752e8804",
+    "agent_id": "agent_001",
+    "action": "deploy",
+    "domain": "ops",
+    "level": 0,
+    "parent": null,
+    "expiry": 1768070328,
+    "issuer": "AION",
+    "revoked": false,
+    "signature": "5b5fbd567d07f93f6382cba54dad1b549113d36975a3d218937e5716e22c6680eb742ff200860b700de507084bb391e58647831628b2d0d2a8a34ee17867cfd7205beadae11539a1dd0835c94496320b45a6400664a095bf38f735194853464491a068199d528823e7983f5c31b5b9e8487a1b413cb26f8cf6b100d1aaf7d09d8d54ac82782b4afe0ecb1e1e992d68f570e6dda3432b3e89f6c21ec02473382095abce8e64deb7ba8b457d28005ca5727be6707d15bc03928e75b5853545786cd11350261754ae6cd303afd6827b5756622b5de1f67538e9d90537eb2619b00446440c6b1076dd47a166ebcbf643dcfafc7efca9b72188496341972abb6bc995",
+    "consumed": true
+  },
+  {
+    "jti": "58bd1960-f95c-4316-aabd-593293769424",
+    "agent_id": "agent_001",
+    "action": "deploy",
+    "domain": "ops",
+    "level": 0,
+    "parent": null,
+    "expiry": 1768138595,
+    "issuer": "AION",
+    "revoked": false,
+    "signature": "8a3fbc170e70da20971ff519495e966612eb4dd51c065ed7fb3b3938be2e0ce2a329c9c291a8fcde0c727b6a961150da64e07f38528d010a8ff546b39547f23ba86ee30061a35a80bd101cbc1e4cf22e73db2723a75d32f5579c58ef12e7acd672cfeb923a55790a0dd60beec247a657c80bf050956ae2c40309610387f723032783ff43a6fc6d833b3aea40d767c02f02fe0df9aa9df8df17f86770d0398ee210018389063cb39f77f6af59a92eaed532097cfde370e002ed21053786814eafad7c09739c7ba79b0ad712876e6b5a328b5da64973e510feb1aa396636eaed0a10f6f075f521da58a66b346a1c4f874f686a74840ae0d1452d042de75e115381"
+  },
+  {
+    "jti": "1044670f-0f3b-44e8-b4c9-aaf8e3cd9d76",
+    "agent_id": "agent_001",
+    "action": "deploy",
+    "domain": "ops",
+    "level": 0,
+    "parent": null,
+    "expiry": 1768147066,
+    "issuer": "AION",
+    "revoked": false,
+    "signature": "5c2337ca4fc392b4f7b81e927bd372bd6fe5ec7b7c59efee831ca9acdcb959d5fa48b86f3a3016af4fc3ed26724e6ab5bcf45cc2d810bb1dc72c9fdb4cdda6c23868d48e524c1831e6004fba04ee237274af9187b4f9a1d6229309e0d924b99fdad990a2c20aa23aef788ff5d5b471fcc4a91046752974035b1cc15aca9c5dad0ef3798347639960d7ca4537965f333e371ba613fc9ee7d0a429d14318daec158b8c1a706aaa2002233ac8fe550e43fe546e7bdbd4e403bf796bc9794ece147120d934758eb8a49444a3997f26e90c3b760cd50d16663dc150a0c8cc5dce0f02cba68d0f1e770978aa4728d7e79d6e8f9dc4ab2d105411038b7c8ea8b921b54c"
+  },
+  {
+    "jti": "969de819-9d02-4021-b35a-6bea8969c93d",
+    "agent_id": "agent_001",
+    "action": "deploy",
+    "domain": "ops",
+    "level": 0,
+    "parent": null,
+    "expiry": 1768147203,
+    "issuer": "AION",
+    "revoked": false,
+    "signature": "0b5783a45915e6fdc7995560ae50942ca2e4a10b5988ad38ab710cb433c72dbe73ef639c1f9ad0542904ad6996b0094f5c2c3911a61c3f887af7af93ce6233a89483e935ae987b2d01bd8935a323b0493291ccd3696e468b6de12c71b50a564b2b20edd22facb6bac108d86a45b4ee126f455a4f3781969268102ca4edb3d4a67a9f73088c345800d7f081ef49bcec6b4cdeb21031f5316ee46d5f49cc2042c5924525f3f99186ad8ed402ab8ebd694471b6796b508a1e13cf1c4cd964638017f498376e31472076c7ef628176e5be7a5f12abf957948635fc7f904d72ca18a5b5f92c003eba7255062410a13fe1aef6a3963b7b476c8ea6d413f488afafeecc"
+  },
+  {
+    "jti": "0cd2afeb-9d37-4f84-bf82-fb417c72aee6",
+    "issued_at": "2026-01-11T15:58:40.061325+00:00",
+    "expires_at": "2026-01-11T16:08:40.061325+00:00",
+    "revoked": false,
+    "consumed": false,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-11T15:58:40.061325+00:00"
+  },
+  {
+    "jti": "9a7ab210-4484-4e3e-94e2-1d523bc435b7",
+    "issued_at": "2026-01-11T18:24:21.610989+00:00",
+    "expires_at": "2026-01-11T18:34:21.610989+00:00",
+    "revoked": false,
+    "consumed": false,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-11T18:24:21.610989+00:00"
+  },
+  {
+    "jti": "9cc35582-6f05-4d2c-899a-a69a6350030f",
+    "issued_at": "2026-01-12T14:46:46.923242+00:00",
+    "expires_at": "2026-01-12T14:56:46.923242+00:00",
+    "revoked": false,
+    "consumed": false,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-12T14:46:46.923242+00:00"
+  },
+  {
+    "jti": "dda6b1be-d98e-432e-8e2a-8934be76f1d0",
+    "issued_at": "2026-01-12T14:56:08.868083+00:00",
+    "expires_at": "2026-01-12T15:06:08.868083+00:00",
+    "revoked": true,
+    "consumed": true,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-12T14:56:08.868083+00:00",
+    "consumed_at": "2026-01-12T14:56:33.308120+00:00",
+    "revoked_at": "2026-01-12T14:58:42.196744+00:00"
+  },
+  {
+    "jti": "e10a53f1-503b-4c42-944f-b3df518f23ad",
+    "issued_at": "2026-01-12T15:17:42.826214+00:00",
+    "expires_at": "2026-01-12T15:27:42.826214+00:00",
+    "revoked": false,
+    "consumed": false,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-12T15:17:42.826214+00:00"
+  },
+  {
+    "version": "v1",
+    "jti": "96860558-d452-47e9-8a2e-6900d8cc51cc",
+    "issued_at": "2026-01-12T15:19:38.916160+00:00",
+    "expires_at": "2026-01-12T15:29:38.916160+00:00",
+    "revoked": false,
+    "consumed": false,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-12T15:19:38.916160+00:00"
+  },
+  {
+    "version": "v1",
+    "jti": "1c4bfde8-8867-471d-9d6d-8eed9551023a",
+    "issued_at": "2026-01-12T15:23:55.164084+00:00",
+    "expires_at": "2026-01-12T15:33:55.164084+00:00",
+    "revoked": false,
+    "consumed": true,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-12T15:23:55.164084+00:00",
+    "consumed_at": "2026-01-12T15:24:26.703997+00:00"
+  },
+  {
+    "version": "v1",
+    "jti": "d3797530-d8f6-49ab-8692-85d2d2c39345",
+    "issued_at": "2026-01-12T15:25:20.259071+00:00",
+    "expires_at": "2026-01-12T15:35:20.259071+00:00",
+    "revoked": true,
+    "consumed": false,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-12T15:25:20.259071+00:00",
+    "revoked_at": "2026-01-12T15:25:49.350075+00:00"
+  },
+  {
+    "jti": "da930bd3-32cd-406f-be76-35e5fffeb8a9",
+    "issued_at": 1768240475,
+    "expires_at": 1768241075,
+    "revoked": false,
+    "consumed": true,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "version": "v1",
+    "recorded_at": 1768240475
+  },
+  {
+    "jti": "4649f766-b9dd-4615-ad01-1dc98f42bad7",
+    "issued_at": 1768240794,
+    "expires_at": 1768241394,
+    "revoked": false,
+    "consumed": true,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "version": "v1",
+    "recorded_at": 1768240794
+  },
+  {
+    "jti": "9878d8e3-6feb-4837-b2a5-6b8a536da542",
+    "issued_at": "2026-01-13T07:49:13.626824+00:00",
+    "expires_at": "2026-01-13T07:59:13.626824+00:00",
+    "revoked": false,
+    "consumed": true,
+    "scope": "ops.deploy",
+    "issuer": "AION_ROOT",
+    "recorded_at": "2026-01-13T07:49:13.626824+00:00",
+    "consumed_at": "2026-01-13T07:49:43.672447+00:00"
+  },
+  {
+    "jti": "2d2cd78a-c7d2-4243-a703-431cf8740928",
+    "sub": "agent-A",
+    "scope": [
+      "ops.read"
+    ],
+    "iat": 1768291551,
+    "exp": 1768291851,
+    "consumed": true,
+    "revoked": false,
+    "consumed_at": "2026-01-13T08:06:13.601801+00:00"
+  },
+  {
+    "jti": "f4ca76c3-6e1b-4871-b328-8c022eb1bad6",
+    "issued_at": "2026-01-13T10:07:09.096492+00:00",
+    "expires_at": "2026-01-13T10:17:09.096492+00:00",
+    "scope": "issue",
+    "issuer": "AION_ROOT",
+    "parent_jti": null,
+    "revoked": false,
+    "consumed": false,
+    "recorded_at": "2026-01-13T10:07:09.096492+00:00"
+  },
+  {
+    "jti": "57fa6f6b-ae6a-49a7-80ca-5c77c4e109f1",
+    "issued_at": "2026-01-13T10:08:51.651943+00:00",
+    "expires_at": "2026-01-13T10:18:51.651943+00:00",
+    "scope": "issue",
+    "issuer": "AION_ROOT",
+    "parent_jti": null,
+    "revoked": false,
+    "consumed": false,
+    "recorded_at": "2026-01-13T10:08:51.651943+00:00"
+  },
+  {
+    "jti": "393b8ff1-aa96-465d-b992-6df0164517b7",
+    "issued_at": "2026-01-13T10:11:58.928341+00:00",
+    "expires_at": "2026-01-13T10:21:58.928341+00:00",
+    "scope": "issue",
+    "issuer": "AION_ROOT",
+    "parent_jti": null,
+    "revoked": false,
+    "consumed": false,
+    "recorded_at": "2026-01-13T10:11:58.928341+00:00"
+  },
+  {
+    "jti": "82a5db74-551d-4181-a443-ed4ad8a75eaf",
+    "issued_at": "2026-01-13T10:45:20.282218+00:00",
+    "expires_at": "2026-01-13T10:55:20.282218+00:00",
+    "scope": "issue",
+    "issuer": "AION_ROOT",
+    "parent_jti": null,
+    "revoked": false,
+    "consumed": false,
+    "recorded_at": "2026-01-13T10:45:20.282218+00:00"
+  },
+  {
+    "jti": "82519b16-723b-4fa6-a9b1-bbccb9c0cd92",
+    "scope": "ops.read",
+    "issued_at": "2026-01-14T06:05:58.992186+00:00",
+    "expires_at": "2026-01-14T06:06:03.992186+00:00",
+    "consumed": false,
+    "revoked": false
+  }
+]

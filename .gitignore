@@ -1,0 +1,20 @@
+# Virtual environments
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Secrets / keys
+*.key
+*.pem
+
+# Runtime / generated data
+authority.json
+authority_store.json
+agent.json
+audit_log.json
+
+# OS / editor noise
+.DS_Store
+Thumbs.db

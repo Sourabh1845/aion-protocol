@@ -1,0 +1,8 @@
+{
+  "jti": "ROOT",
+  "scope": "*",
+  "parent": null,
+  "issued_at": "GENESIS",
+  "expires_at": null,
+  "consumed": false
+}
