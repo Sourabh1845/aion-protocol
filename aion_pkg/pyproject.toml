@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aion-protocol"
+version = "2.0.0"
+description = "Immutable Authority Infrastructure for Autonomous AI Agents"
+authors = [{name = "Sourabh Ranjan"}]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+aion = "aion.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["aion*"]
