@@ -83,4 +83,38 @@ def revoke_authority(jti):
     conn.commit()
     conn.close()
 
-init_db()
+import sqlite3
+from pathlib import Path
+
+def _sync_init():
+    db_file = Path(__file__).parent.parent / "storage" / "aion.db"
+    db_file.parent.mkdir(exist_ok=True)
+    conn = sqlite3.connect(str(db_file))
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS authorities (
+            jti TEXT PRIMARY KEY,
+            issuer TEXT,
+            scope TEXT,
+            parent TEXT,
+            policy TEXT,
+            issued_at TEXT,
+            expires_at TEXT,
+            consumed INTEGER DEFAULT 0,
+            revoked INTEGER DEFAULT 0
+        )
+    """)
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS audit_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            event TEXT,
+            jti TEXT,
+            scope TEXT,
+            timestamp TEXT,
+            prev_hash TEXT,
+            hash TEXT
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+_sync_init()

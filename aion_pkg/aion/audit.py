@@ -1,30 +1,46 @@
 import json
 import hashlib
+import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-AUDIT_FILE = Path(__file__).parent.parent / "storage" / "audit_log.json"
+DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
 
 def _hash_record(record):
     payload = json.dumps(record, sort_keys=True).encode()
     return hashlib.sha256(payload).hexdigest()
 
 def log(event_type, payload):
-    AUDIT_FILE.parent.mkdir(exist_ok=True)
+    try:
+        conn = sqlite3.connect(str(DB_FILE))
+        cursor = conn.execute(
+            "SELECT hash FROM audit_log ORDER BY id DESC LIMIT 1"
+        )
+        row = cursor.fetchone()
+        prev_hash = row[0] if row else "GENESIS"
 
-    if AUDIT_FILE.exists():
-        data = json.loads(AUDIT_FILE.read_text())
-    else:
-        data = []
+        timestamp = datetime.now(timezone.utc).isoformat()
+        
+        record = {
+            "timestamp": timestamp,
+            "event": event_type,
+            "payload": str(payload),
+            "prev_hash": prev_hash,
+        }
+        record["hash"] = _hash_record(record)
 
-    prev_hash = data[-1]["hash"] if data else "GENESIS"
-
-    record = {
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-        "event": event_type,
-        "payload": payload,
-        "prev_hash": prev_hash,
-    }
-    record["hash"] = _hash_record(record)
-    data.append(record)
-    AUDIT_FILE.write_text(json.dumps(data, indent=2))
+        conn.execute("""
+            INSERT INTO audit_log (event, jti, scope, timestamp, prev_hash, hash)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            event_type,
+            payload.get("jti", "") if isinstance(payload, dict) else "",
+            payload.get("scope", "") if isinstance(payload, dict) else "",
+            timestamp,
+            prev_hash,
+            record["hash"]
+        ))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        print(f"Audit log error: {e}")

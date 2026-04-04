@@ -1,9 +1,16 @@
 from fastapi import FastAPI, Depends
 from pydantic import BaseModel
-from aion.authority import issue, verify, revoke
-from aion.enforce import enforce
 from aion.auth_middleware import verify_api_key
+from aion.async_storage import (
+    async_get_authority,
+    async_insert_authority,
+    async_mark_consumed,
+    async_revoke_authority
+)
+from aion.audit import log
+import uuid
 import logging
+from datetime import datetime, timezone, timedelta
 
 logger = logging.getLogger(__name__)
 
@@ -12,6 +19,8 @@ app = FastAPI(
     version="2.0.0",
     description="Immutable Authority Infrastructure for Autonomous AI Agents"
 )
+
+TTL_SECONDS = 300
 
 class IssueRequest(BaseModel):
     scope: str
@@ -22,21 +31,80 @@ class EnforceRequest(BaseModel):
     scope: str
 
 @app.post("/issue")
-def issue_authority(req: IssueRequest, api_key: str = Depends(verify_api_key)):
-    return issue(req.scope, issuer=req.issuer)
+async def issue_authority(req: IssueRequest, api_key: str = Depends(verify_api_key)):
+    try:
+        if not req.scope:
+            return {"error": "INVALID_SCOPE"}
+        now = datetime.now(timezone.utc)
+        auth = {
+            "jti": str(uuid.uuid4()),
+            "issuer": req.issuer,
+            "scope": req.scope,
+            "parent": None,
+            "policy": {},
+            "issued_at": now.isoformat(),
+            "expires_at": (now + timedelta(seconds=TTL_SECONDS)).isoformat(),
+            "consumed": False,
+            "revoked": False,
+        }
+        await async_insert_authority(auth)
+        log("ISSUE", auth)
+        return auth
+    except Exception as e:
+        logger.error(f"Issue failed: {str(e)}")
+        return {"error": "ISSUE_FAILED", "detail": str(e)}
 
 @app.post("/enforce")
-def enforce_authority(req: EnforceRequest, api_key: str = Depends(verify_api_key)):
-    return enforce(req.jti, req.scope)
+async def enforce_authority(req: EnforceRequest, api_key: str = Depends(verify_api_key)):
+    try:
+        auth = await async_get_authority(req.jti)
+        if not auth:
+            return {"error": "NOT_FOUND"}
+        if auth["revoked"]:
+            return {"error": "ENFORCEMENT_DENIED", "reason": "REVOKED"}
+        if auth["consumed"]:
+            return {"error": "ENFORCEMENT_DENIED", "reason": "CONSUMED"}
+        if auth["scope"] != req.scope:
+            return {"error": "ENFORCEMENT_DENIED", "reason": "SCOPE_MISMATCH"}
+        if datetime.fromisoformat(auth["expires_at"]) < datetime.now(timezone.utc):
+            return {"error": "ENFORCEMENT_DENIED", "reason": "EXPIRED"}
+        await async_mark_consumed(req.jti)
+        log("ENFORCE_ALLOW", {"jti": req.jti, "scope": req.scope})
+        return {"status": "ENFORCED", "jti": req.jti, "scope": req.scope}
+    except Exception as e:
+        logger.error(f"Enforce failed: {str(e)}")
+        return {"error": "ENFORCE_FAILED", "detail": str(e)}
 
 @app.get("/verify/{jti}")
-def verify_authority(jti: str, scope: str, api_key: str = Depends(verify_api_key)):
-    return verify(jti, scope)
+async def verify_authority(jti: str, scope: str, api_key: str = Depends(verify_api_key)):
+    try:
+        auth = await async_get_authority(jti)
+        if not auth:
+            return {"error": "NOT_FOUND"}
+        if auth["revoked"]:
+            return {"error": "REVOKED"}
+        if auth["consumed"]:
+            return {"error": "CONSUMED"}
+        if auth["scope"] != scope:
+            return {"error": "SCOPE_MISMATCH"}
+        if datetime.fromisoformat(auth["expires_at"]) < datetime.now(timezone.utc):
+            return {"error": "EXPIRED"}
+        return {"status": "VALID", "jti": jti, "scope": scope}
+    except Exception as e:
+        return {"error": "VERIFY_FAILED", "detail": str(e)}
 
 @app.post("/revoke/{jti}")
-def revoke_authority(jti: str, api_key: str = Depends(verify_api_key)):
-    return revoke(jti)
+async def revoke_authority(jti: str, api_key: str = Depends(verify_api_key)):
+    try:
+        auth = await async_get_authority(jti)
+        if not auth:
+            return {"error": "NOT_FOUND"}
+        await async_revoke_authority(jti)
+        log("REVOKE", {"jti": jti})
+        return {"status": "REVOKED", "jti": jti}
+    except Exception as e:
+        return {"error": "REVOKE_FAILED", "detail": str(e)}
 
 @app.get("/health")
-def health():
+async def health():
     return {"status": "AION is running", "version": "2.0.0"}
