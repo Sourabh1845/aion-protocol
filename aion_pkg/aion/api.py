@@ -1,5 +1,9 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from aion.auth_middleware import verify_api_key
 from aion.async_storage import (
     async_get_authority,
@@ -14,11 +18,16 @@ from datetime import datetime, timezone, timedelta
 
 logger = logging.getLogger(__name__)
 
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(
     title="AION Protocol",
     version="2.0.0",
     description="Immutable Authority Infrastructure for Autonomous AI Agents"
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 TTL_SECONDS = 300
 
@@ -31,7 +40,8 @@ class EnforceRequest(BaseModel):
     scope: str
 
 @app.post("/issue")
-async def issue_authority(req: IssueRequest, api_key: str = Depends(verify_api_key)):
+@limiter.limit("30/minute")
+async def issue_authority(request: Request, req: IssueRequest, api_key: str = Depends(verify_api_key)):
     try:
         if not req.scope:
             return {"error": "INVALID_SCOPE"}
@@ -55,7 +65,8 @@ async def issue_authority(req: IssueRequest, api_key: str = Depends(verify_api_k
         return {"error": "ISSUE_FAILED", "detail": str(e)}
 
 @app.post("/enforce")
-async def enforce_authority(req: EnforceRequest, api_key: str = Depends(verify_api_key)):
+@limiter.limit("60/minute")
+async def enforce_authority(request: Request, req: EnforceRequest, api_key: str = Depends(verify_api_key)):
     try:
         auth = await async_get_authority(req.jti)
         if not auth:
@@ -76,7 +87,8 @@ async def enforce_authority(req: EnforceRequest, api_key: str = Depends(verify_a
         return {"error": "ENFORCE_FAILED", "detail": str(e)}
 
 @app.get("/verify/{jti}")
-async def verify_authority(jti: str, scope: str, api_key: str = Depends(verify_api_key)):
+@limiter.limit("60/minute")
+async def verify_authority(request: Request, jti: str, scope: str, api_key: str = Depends(verify_api_key)):
     try:
         auth = await async_get_authority(jti)
         if not auth:
@@ -94,7 +106,8 @@ async def verify_authority(jti: str, scope: str, api_key: str = Depends(verify_a
         return {"error": "VERIFY_FAILED", "detail": str(e)}
 
 @app.post("/revoke/{jti}")
-async def revoke_authority(jti: str, api_key: str = Depends(verify_api_key)):
+@limiter.limit("30/minute")
+async def revoke_authority(request: Request, jti: str, api_key: str = Depends(verify_api_key)):
     try:
         auth = await async_get_authority(jti)
         if not auth:
