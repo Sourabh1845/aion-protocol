@@ -1,6 +1,6 @@
 import json
 import hashlib
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 AUDIT_FILE = Path(__file__).parent.parent / "storage" / "audit_log.json"
@@ -20,7 +20,7 @@ def log(event_type, payload):
     prev_hash = data[-1]["hash"] if data else "GENESIS"
 
     record = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": datetime.now(timezone.utc).isoformat(),
         "event": event_type,
         "payload": payload,
         "prev_hash": prev_hash,
