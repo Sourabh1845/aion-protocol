@@ -5,19 +5,24 @@ import os
 from datetime import datetime, timezone
 from contextlib import contextmanager
 
-DB_CONFIG = {
-    "host": os.environ.get("DB_HOST", "localhost"),
-    "port": 5432,
-    "database": "aion_db",
-    "user": "postgres",
-    "password": os.environ.get("DB_PASSWORD", "SRS")
-}
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-connection_pool = pool.ThreadedConnectionPool(
-    minconn=5,
-    maxconn=20,
-    **DB_CONFIG
-)
+if DATABASE_URL:
+    connection_pool = pool.ThreadedConnectionPool(
+        minconn=2,
+        maxconn=10,
+        dsn=DATABASE_URL
+    )
+else:
+    connection_pool = pool.ThreadedConnectionPool(
+        minconn=5,
+        maxconn=20,
+        host=os.environ.get("DB_HOST", "localhost"),
+        port=5432,
+        database="aion_db",
+        user="postgres",
+        password=os.environ.get("DB_PASSWORD", "SRS")
+    )
 
 @contextmanager
 def get_conn():
