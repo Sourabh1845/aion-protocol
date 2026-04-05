@@ -11,7 +11,7 @@ from aion.async_storage import (
     async_revoke_authority
 )
 from aion.audit import log
-from aion.lock import acquire_lock, release_lock
+from aion.redis_lock import acquire_redis_lock as acquire_lock, release_redis_lock as release_lock
 import uuid
 import logging
 from datetime import datetime, timezone, timedelta
