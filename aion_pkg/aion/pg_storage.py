@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from contextlib import contextmanager
 
 DB_CONFIG = {
-    "host": "localhost",
+    "host": "host.docker.internal",
     "port": 5432,
     "database": "aion_db",
     "user": "postgres",

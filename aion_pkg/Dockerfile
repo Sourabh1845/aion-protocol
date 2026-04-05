@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN pip install --no-cache-dir fastapi uvicorn aiosqlite slowapi
+RUN pip install --no-cache-dir fastapi uvicorn aiosqlite slowapi psycopg2-binary redis
 
 RUN mkdir -p storage
 
