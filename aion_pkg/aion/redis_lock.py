@@ -1,8 +1,12 @@
 import redis
 import time
 import uuid
-
-REDIS_CLIENT = redis.Redis(host='localhost', port=6379, db=0)
+import os
+REDIS_CLIENT = redis.Redis(
+    host=os.environ.get("REDIS_HOST", "localhost"),
+    port=6379,
+    db=0
+)
 
 def acquire_redis_lock(jti: str, ttl_seconds: float = 5.0) -> bool:
     lock_key = f"aion:lock:{jti}"
