@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from aion.store import save_authority, get_authority, mark_consumed, revoke_authority
 from aion.audit import log
+from aion.token_signing import sign_token, verify_token_signature
 import logging
 
 logger = logging.getLogger(__name__)
@@ -25,9 +26,14 @@ def issue(scope, parent=None, policy=None, issuer="root.system"):
             "consumed": False,
             "revoked": False,
         }
+
+        # RSA Sign the token
+        signature = sign_token(auth)
+        auth["signature"] = signature
+
         save_authority(auth)
         log("ISSUE", auth)
-        logger.info(f"Authority issued: {auth['jti']} scope: {scope}")
+        logger.info(f"Authority issued + signed: {auth['jti']} scope: {scope}")
         return auth
     except Exception as e:
         logger.error(f"Issue failed: {str(e)}")
@@ -54,6 +60,12 @@ def verify(jti, scope):
         if datetime.fromisoformat(auth["expires_at"]) < datetime.now(timezone.utc):
             log("VERIFY_FAIL", {"jti": jti, "reason": "EXPIRED"})
             return {"error": "EXPIRED"}
+
+        # Verify RSA signature
+        signature = auth.get("signature")
+        if signature and not verify_token_signature(auth, signature):
+            log("VERIFY_FAIL", {"jti": jti, "reason": "INVALID_SIGNATURE"})
+            return {"error": "INVALID_SIGNATURE"}
 
         mark_consumed(jti)
         log("VERIFY_OK", {"jti": jti, "scope": scope})
