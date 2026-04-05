@@ -1,4 +1,5 @@
 import psycopg2
+from psycopg2 import pool
 import json
 from datetime import datetime, timezone
 from contextlib import contextmanager
@@ -11,9 +12,15 @@ DB_CONFIG = {
     "password": "SRS"
 }
 
+connection_pool = pool.ThreadedConnectionPool(
+    minconn=5,
+    maxconn=20,
+    **DB_CONFIG
+)
+
 @contextmanager
 def get_conn():
-    conn = psycopg2.connect(**DB_CONFIG)
+    conn = connection_pool.getconn()
     try:
         yield conn
         conn.commit()
@@ -21,7 +28,7 @@ def get_conn():
         conn.rollback()
         raise
     finally:
-        conn.close()
+        connection_pool.putconn(conn)
 
 def init_pg_db():
     with get_conn() as conn:
