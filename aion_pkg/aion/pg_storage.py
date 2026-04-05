@@ -1,15 +1,16 @@
 import psycopg2
 from psycopg2 import pool
 import json
+import os
 from datetime import datetime, timezone
 from contextlib import contextmanager
 
 DB_CONFIG = {
-    "host": "host.docker.internal",
+    "host": os.environ.get("DB_HOST", "localhost"),
     "port": 5432,
     "database": "aion_db",
     "user": "postgres",
-    "password": "SRS"
+    "password": os.environ.get("DB_PASSWORD", "SRS")
 }
 
 connection_pool = pool.ThreadedConnectionPool(
