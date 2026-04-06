@@ -1,5 +1,9 @@
 from fastapi import FastAPI, Depends, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from aion.auth_middleware import verify_api_key
 from aion.pg_storage import (
     pg_get_authority,
@@ -15,11 +19,16 @@ from datetime import datetime, timezone, timedelta
 
 logger = logging.getLogger(__name__)
 
+limiter = Limiter(key_func=get_remote_address)
+
 app = FastAPI(
     title="AION Protocol",
-    version="2.0.0",
+    version="3.0.0",
     description="Immutable Authority Infrastructure for Autonomous AI Agents"
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 TTL_SECONDS = 300
 
@@ -32,6 +41,7 @@ class EnforceRequest(BaseModel):
     scope: str
 
 @app.post("/issue")
+@limiter.limit("30/minute")
 def issue_authority(request: Request, req: IssueRequest, api_key: str = Depends(verify_api_key)):
     try:
         if not req.scope:
@@ -56,6 +66,7 @@ def issue_authority(request: Request, req: IssueRequest, api_key: str = Depends(
         return {"error": "ISSUE_FAILED", "detail": str(e)}
 
 @app.post("/enforce")
+@limiter.limit("60/minute")
 def enforce_authority(request: Request, req: EnforceRequest, api_key: str = Depends(verify_api_key)):
     try:
         if not acquire_lock(req.jti):
@@ -88,6 +99,7 @@ def enforce_authority(request: Request, req: EnforceRequest, api_key: str = Depe
         return {"error": "ENFORCE_FAILED", "detail": str(e)}
 
 @app.get("/verify/{jti}")
+@limiter.limit("60/minute")
 def verify_authority(request: Request, jti: str, scope: str, api_key: str = Depends(verify_api_key)):
     try:
         auth = pg_get_authority(jti)
@@ -106,6 +118,7 @@ def verify_authority(request: Request, jti: str, scope: str, api_key: str = Depe
         return {"error": "VERIFY_FAILED", "detail": str(e)}
 
 @app.post("/revoke/{jti}")
+@limiter.limit("30/minute")
 def revoke_authority(request: Request, jti: str, api_key: str = Depends(verify_api_key)):
     try:
         auth = pg_get_authority(jti)
@@ -119,4 +132,4 @@ def revoke_authority(request: Request, jti: str, api_key: str = Depends(verify_a
 
 @app.get("/health")
 def health():
-    return {"status": "AION is running", "version": "2.0.0"}
+    return {"status": "AION is running", "version": "3.0.0"}
