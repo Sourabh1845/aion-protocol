@@ -13,6 +13,7 @@ from aion.pg_storage import (
 )
 from aion.audit import log
 from aion.redis_lock import acquire_redis_lock as acquire_lock, release_redis_lock as release_lock
+from aion.token_signing import sign_token, verify_token_signature
 import uuid
 import logging
 from datetime import datetime, timezone, timedelta
@@ -58,6 +59,7 @@ def issue_authority(request: Request, req: IssueRequest, api_key: str = Depends(
             "consumed": False,
             "revoked": False,
         }
+        auth["signature"] = sign_token(auth)
         pg_insert_authority(auth)
         log("ISSUE", auth)
         return auth
@@ -89,6 +91,11 @@ def enforce_authority(request: Request, req: EnforceRequest, api_key: str = Depe
             release_lock(req.jti)
             return {"error": "ENFORCEMENT_DENIED", "reason": "EXPIRED"}
 
+        signature = auth.get("signature")
+        if signature and not verify_token_signature(auth, signature):
+            release_lock(req.jti)
+            return {"error": "ENFORCEMENT_DENIED", "reason": "INVALID_SIGNATURE"}
+
         pg_mark_consumed(req.jti)
         release_lock(req.jti)
         log("ENFORCE_ALLOW", {"jti": req.jti, "scope": req.scope})
@@ -113,6 +120,9 @@ def verify_authority(request: Request, jti: str, scope: str, api_key: str = Depe
             return {"error": "SCOPE_MISMATCH"}
         if datetime.fromisoformat(str(auth["expires_at"])) < datetime.now(timezone.utc):
             return {"error": "EXPIRED"}
+        signature = auth.get("signature")
+        if signature and not verify_token_signature(auth, signature):
+            return {"error": "INVALID_SIGNATURE"}
         return {"status": "VALID", "jti": jti, "scope": scope}
     except Exception as e:
         return {"error": "VERIFY_FAILED", "detail": str(e)}
