@@ -1,16 +1,19 @@
 import os
 
-REDIS_HOST = os.environ.get("REDIS_HOST", "localhost")
+REDIS_URL = os.environ.get("REDIS_URL")
 
 try:
     import redis
-    REDIS_CLIENT = redis.Redis(host=REDIS_HOST, port=6379, db=0)
+    if REDIS_URL:
+        REDIS_CLIENT = redis.from_url(REDIS_URL, ssl_cert_reqs=None)
+    else:
+        REDIS_CLIENT = redis.Redis(host="localhost", port=6379, db=0)
     REDIS_CLIENT.ping()
     REDIS_AVAILABLE = True
     print("Redis connected successfully")
-except Exception:
+except Exception as e:
     REDIS_AVAILABLE = False
-    print("Redis not available — using local lock fallback")
+    print(f"Redis not available — using local lock fallback: {e}")
 
 # Fallback in-memory lock
 _local_locks = set()
@@ -28,8 +31,6 @@ def acquire_redis_lock(jti: str, ttl_seconds: float = 5.0) -> bool:
             return acquired is True
         except Exception:
             pass
-    
-    # Fallback
     if jti in _local_locks:
         return False
     _local_locks.add(jti)
@@ -43,8 +44,6 @@ def release_redis_lock(jti: str):
             return
         except Exception:
             pass
-    
-    # Fallback
     _local_locks.discard(jti)
 
 def test_redis_connection():
