@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AION Protocol — Authority Infrastructure for AI Agents</title>
+<meta name="description" content="AION Protocol — Control what AI agents are allowed to do. Cryptographic authority tokens for autonomous AI systems.">
+<title>AION Protocol — Control What AI Agents Can Do</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -24,7 +25,6 @@
     font-family: 'Syne', sans-serif;
     overflow-x: hidden;
   }
-  /* Grid background */
   body::before {
     content: '';
     position: fixed;
@@ -36,8 +36,6 @@
     pointer-events: none;
     z-index: 0;
   }
-
-  /* NAV */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -67,7 +65,6 @@
   }
   .nav-links a:hover { color: var(--accent); }
 
-  /* HERO */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -107,9 +104,9 @@
     50% { opacity: 0.4; transform: scale(0.8); }
   }
   h1 {
-    font-size: clamp(3rem, 7vw, 6rem);
+    font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 800;
-    line-height: 1.0;
+    line-height: 1.05;
     letter-spacing: -0.02em;
     margin-bottom: 1.5rem;
     animation: fadeUp 0.6s 0.1s ease both;
@@ -118,11 +115,20 @@
   .hero-sub {
     font-size: 1.2rem;
     color: var(--muted);
-    max-width: 600px;
+    max-width: 620px;
     line-height: 1.7;
-    margin-bottom: 3rem;
+    margin-bottom: 1rem;
     font-weight: 400;
     animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-sub strong { color: var(--text); }
+  .hero-sub2 {
+    font-size: 0.95rem;
+    color: var(--muted);
+    max-width: 580px;
+    line-height: 1.7;
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s 0.25s ease both;
   }
   .hero-actions {
     display: flex;
@@ -164,46 +170,8 @@
     transform: translateY(-2px);
   }
 
-  /* TERMINAL */
-  .terminal-wrap {
-    padding: 4rem 3rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-    animation: fadeUp 0.6s 0.4s ease both;
-  }
-  .terminal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.82rem;
-  }
-  .terminal-bar {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.7rem 1rem;
-    background: #0a0a12;
-    border-bottom: 1px solid var(--border);
-  }
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot.r { background: #ff5f57; }
-  .dot.y { background: #febc2e; }
-  .dot.g { background: #28c840; }
-  .terminal-title { color: var(--muted); font-size: 0.7rem; margin-left: auto; margin-right: auto; }
-  .terminal-body { padding: 1.5rem; line-height: 2; }
-  .t-comment { color: var(--muted); }
-  .t-cmd { color: var(--accent); }
-  .t-out { color: #88aaff; }
-  .t-key { color: #ff9966; }
-  .t-val { color: var(--accent); }
-  .t-err { color: var(--danger); }
-
-  /* HOW IT WORKS */
-  section {
+  /* PROBLEM SECTION */
+  .problem {
     padding: 5rem 3rem;
     max-width: 1100px;
     margin: 0 auto;
@@ -224,51 +192,139 @@
     margin-bottom: 1rem;
     letter-spacing: -0.02em;
   }
-  .section-sub {
-    color: var(--muted);
-    font-size: 1rem;
-    margin-bottom: 3rem;
-    max-width: 550px;
-    line-height: 1.7;
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .problem-card {
+    background: rgba(255,51,102,0.05);
+    border: 1px solid rgba(255,51,102,0.15);
+    border-radius: 4px;
+    padding: 1.5rem;
+  }
+  .problem-card .icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+  .problem-card h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--text); }
+  .problem-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+  .problem-card .solution {
+    margin-top: 0.8rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
   }
 
-  /* STEPS */
-  .steps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
+  /* QUICKSTART */
+  .quickstart {
+    padding: 5rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
-  .step {
+  .steps-quick {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+  .step-q {
+    background: var(--surface);
+    padding: 1.5rem;
+  }
+  .step-q .num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .step-q h3 { font-size: 0.95rem; margin-bottom: 0.4rem; }
+  .step-q p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+
+  .code-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: #0a0a12;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.7rem;
+  }
+  .code-body { padding: 1.2rem 1.5rem; line-height: 2; overflow-x: auto; }
+  .t-comment { color: var(--muted); }
+  .t-cmd { color: var(--accent); }
+  .t-key { color: #ff9966; }
+  .t-val { color: var(--accent); }
+  .t-err { color: var(--danger); }
+  .t-out { color: #88aaff; }
+
+  /* USE CASES */
+  .usecases {
+    padding: 5rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+  .usecase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .usecase {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 4px;
     padding: 1.8rem;
-    position: relative;
     transition: border-color 0.2s, transform 0.2s;
   }
-  .step:hover {
+  .usecase:hover {
     border-color: rgba(0,255,136,0.3);
     transform: translateY(-4px);
   }
-  .step-num {
+  .usecase .icon { font-size: 1.8rem; margin-bottom: 1rem; }
+  .usecase h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .usecase p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+  .usecase .example {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    background: rgba(0,255,136,0.04);
+    border-left: 2px solid var(--accent);
     font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    margin-bottom: 1rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.6;
   }
-  .step h3 {
-    font-size: 1rem;
-    margin-bottom: 0.6rem;
-    font-weight: 700;
-  }
-  .step p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
 
-  /* ATTACKS */
+  /* SECURITY */
+  .security {
+    padding: 5rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
   .attacks {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
+    margin-top: 2.5rem;
   }
   .attack {
     background: rgba(255,51,102,0.05);
@@ -292,8 +348,6 @@
     padding: 0.2rem 0.5rem;
     border-radius: 2px;
   }
-
-  /* STATS */
   .stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -302,7 +356,7 @@
     border: 1px solid var(--border);
     border-radius: 4px;
     overflow: hidden;
-    margin-top: 4rem;
+    margin-top: 3rem;
   }
   .stat {
     background: var(--surface);
@@ -319,22 +373,14 @@
   .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 0.3rem; }
 
   /* INSTALL */
-  .install-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 2rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+  .install {
+    padding: 5rem 3rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
   }
-  .install-box span { color: var(--accent); }
-  .copy-hint { color: var(--muted); font-size: 0.75rem; margin-top: 0.5rem; }
 
-  /* FOOTER */
   footer {
     border-top: 1px solid var(--border);
     padding: 2rem 3rem;
@@ -361,12 +407,7 @@
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0;
-  }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 </style>
 </head>
 <body>
@@ -374,97 +415,161 @@
 <nav>
   <a class="nav-logo" href="#">AION://</a>
   <div class="nav-links">
-    <a href="#how">How it works</a>
+    <a href="#problem">Problem</a>
+    <a href="#quickstart">Quickstart</a>
+    <a href="#usecases">Use Cases</a>
     <a href="#security">Security</a>
-    <a href="#install">Install</a>
     <a href="https://github.com/Sourabh1845/aion-protocol" target="_blank">GitHub</a>
-    <a href="https://aion-protocol.onrender.com/docs" target="_blank">API Docs</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-badge">LIVE ON CLOUD — v3.0.0</div>
-  <h1>Authority Layer<br>for <span>AI Agents</span></h1>
+  <h1>Control what<br>AI agents are<br><span>allowed to do.</span></h1>
   <p class="hero-sub">
-    AION is a cryptographic authority governance layer. Every AI agent action requires a signed, scoped, one-time token — before anything happens.
+    AION gives every AI agent action a <strong>signed, scoped, one-time token</strong> — before anything happens. No token, no action.
+  </p>
+  <p class="hero-sub2">
+    Works with LangChain, CrewAI, and any Python AI agent. Open source. Free to use.
   </p>
   <div class="hero-actions">
-    <a class="btn-primary" href="#install">pip install aion-protocol</a>
-    <a class="btn-secondary" href="https://aion-protocol.onrender.com/docs" target="_blank">View API Docs →</a>
-    <a class="btn-secondary" href="https://github.com/Sourabh1845/aion-protocol" target="_blank">GitHub →</a>
+    <a class="btn-primary" href="#quickstart">Get Started in 30s →</a>
+    <a class="btn-secondary" href="https://aion-protocol.onrender.com/docs" target="_blank">API Docs</a>
+    <a class="btn-secondary" href="https://github.com/Sourabh1845/aion-protocol" target="_blank">GitHub</a>
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- TERMINAL DEMO -->
-<div class="terminal-wrap">
-  <div class="terminal">
-    <div class="terminal-bar">
-      <div class="dot r"></div>
-      <div class="dot y"></div>
-      <div class="dot g"></div>
-      <span class="terminal-title">aion-protocol — live demo</span>
+<!-- PROBLEM -->
+<div class="problem" id="problem">
+  <div class="section-label">// the problem</div>
+  <h2>AI agents act.<br>Who controls them?</h2>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="icon">🤖</div>
+      <h3>Agents act without permission</h3>
+      <p>Your AI agent deletes a file, sends an email, or calls an API — without any authorization check.</p>
+      <div class="solution">→ AION blocks unauthorized actions</div>
     </div>
-    <div class="terminal-body">
-      <div><span class="t-comment"># Step 1: Agent requests authority before acting</span></div>
-      <div><span class="t-cmd">POST</span> /issue → <span class="t-key">"scope"</span>: <span class="t-val">"delete.file"</span></div>
+    <div class="problem-card">
+      <div class="icon">🔄</div>
+      <h3>Same action runs twice</h3>
+      <p>A bug or replay attack causes an agent to execute the same action multiple times — no way to stop it.</p>
+      <div class="solution">→ AION tokens are one-time use</div>
+    </div>
+    <div class="problem-card">
+      <div class="icon">🎯</div>
+      <h3>Agents exceed their scope</h3>
+      <p>Agent authorized to read data starts writing or deleting — scope creep with no enforcement layer.</p>
+      <div class="solution">→ AION enforces exact scope</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- QUICKSTART -->
+<div class="quickstart" id="quickstart">
+  <div class="section-label">// quickstart</div>
+  <h2>Up and running<br>in 30 seconds</h2>
+
+  <div class="steps-quick">
+    <div class="step-q">
+      <div class="num">01 —</div>
+      <h3>Install</h3>
+      <p>One pip command — no config needed.</p>
+    </div>
+    <div class="step-q">
+      <div class="num">02 —</div>
+      <h3>Issue Token</h3>
+      <p>Agent requests authority for a specific action.</p>
+    </div>
+    <div class="step-q">
+      <div class="num">03 —</div>
+      <h3>Enforce</h3>
+      <p>AION verifies — then allows or blocks the action.</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span>terminal</span></div>
+    <div class="code-body">
+      <div><span class="t-cmd">$ pip install aion-protocol</span></div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span>issue a token — POST /issue</span></div>
+    <div class="code-body">
+      <div><span class="t-comment"># Agent requests authority before acting</span></div>
+      <div><span class="t-cmd">curl</span> -X POST https://aion-protocol.onrender.com/issue \</div>
+      <div>&nbsp;&nbsp;-H <span class="t-val">"X-AION-API-Key: your-key"</span> \</div>
+      <div>&nbsp;&nbsp;-H <span class="t-val">"Content-Type: application/json"</span> \</div>
+      <div>&nbsp;&nbsp;-d <span class="t-val">'{"scope": "delete.file", "issuer": "my-agent"}'</span></div>
       <div>&nbsp;</div>
       <div><span class="t-out">{</span></div>
       <div>&nbsp;&nbsp;<span class="t-key">"jti"</span>: <span class="t-val">"a32400ea-228d-4e7c..."</span>,</div>
       <div>&nbsp;&nbsp;<span class="t-key">"scope"</span>: <span class="t-val">"delete.file"</span>,</div>
       <div>&nbsp;&nbsp;<span class="t-key">"signature"</span>: <span class="t-val">"TzijYEpR6CVQ..."</span>,</div>
-      <div>&nbsp;&nbsp;<span class="t-key">"expires_at"</span>: <span class="t-val">"2026-04-09T10:34:49Z"</span></div>
+      <div>&nbsp;&nbsp;<span class="t-key">"expires_at"</span>: <span class="t-val">"2026-04-10T10:00:00Z"</span></div>
       <div><span class="t-out">}</span></div>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span>enforce — POST /enforce</span></div>
+    <div class="code-body">
+      <div><span class="t-comment"># Agent presents token — AION allows or blocks</span></div>
+      <div><span class="t-cmd">curl</span> -X POST https://aion-protocol.onrender.com/enforce \</div>
+      <div>&nbsp;&nbsp;-d <span class="t-val">'{"jti": "a32400ea...", "scope": "delete.file"}'</span></div>
       <div>&nbsp;</div>
-      <div><span class="t-comment"># Step 2: Agent enforces token — action allowed</span></div>
-      <div><span class="t-cmd">POST</span> /enforce → <span class="t-val">"ENFORCED"</span> ✓</div>
-      <div>&nbsp;</div>
-      <div><span class="t-comment"># Step 3: Replay attack — same token reused</span></div>
-      <div><span class="t-cmd">POST</span> /enforce → <span class="t-err">"CONSUMED" — BLOCKED</span> ✗</div>
+      <div><span class="t-out">✓ {"status": "ENFORCED"}</span>  &nbsp;<span class="t-comment">← action allowed</span></div>
+      <div><span class="t-err">✗ {"error": "CONSUMED"}</span>  &nbsp;<span class="t-comment">← replay blocked</span></div>
+      <div><span class="t-err">✗ {"error": "SCOPE_MISMATCH"}</span>  &nbsp;<span class="t-comment">← wrong scope blocked</span></div>
+    </div>
+  </div>
+
+  <div style="margin-top:1.5rem;">
+    <a class="btn-primary" href="https://aion-protocol.onrender.com/docs" target="_blank">Full API Docs →</a>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- USE CASES -->
+<div class="usecases" id="usecases">
+  <div class="section-label">// use cases</div>
+  <h2>Who needs AION?</h2>
+  <div class="usecase-grid">
+    <div class="usecase">
+      <div class="icon">🏗️</div>
+      <h3>AI Agent Developers</h3>
+      <p>Building autonomous agents with LangChain or CrewAI? Add authority control so agents can't exceed their permissions.</p>
+      <div class="example">scope: "send.email" → agent can send<br>scope: "delete.db" → blocked unless authorized</div>
+    </div>
+    <div class="usecase">
+      <div class="icon">🏢</div>
+      <h3>Startups with AI Workflows</h3>
+      <p>Running AI pipelines that touch real data or APIs? AION adds an authorization layer between your AI and your systems.</p>
+      <div class="example">Every action logged + auditable<br>Revoke any agent instantly</div>
+    </div>
+    <div class="usecase">
+      <div class="icon">🔬</div>
+      <h3>AI Safety Researchers</h3>
+      <p>Studying AI agent behavior? AION gives you fine-grained control and audit trails over what agents are allowed to do.</p>
+      <div class="example">Full audit log of every action<br>Cryptographic proof of authority</div>
     </div>
   </div>
 </div>
 
 <hr class="divider">
 
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="section-label">// how it works</div>
-  <h2>Every action needs<br>a signed token</h2>
-  <p class="section-sub">No token, no action. It's that simple. AION sits between your AI agent and the outside world.</p>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01 —</div>
-      <h3>Request Authority</h3>
-      <p>Agent calls /issue with a scope. AION returns an RSA-signed, time-limited token.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">02 —</div>
-      <h3>Enforce</h3>
-      <p>Before acting, agent presents the token. AION verifies scope, signature, and expiry.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">03 —</div>
-      <h3>Consume & Block</h3>
-      <p>Token is consumed on use. Any replay attempt is permanently blocked.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">04 —</div>
-      <h3>Revoke Anytime</h3>
-      <p>Revoke any token instantly. Agent loses authority immediately — no waiting.</p>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
 <!-- SECURITY -->
-<section id="security">
-  <div class="section-label">// attack testing</div>
+<div class="security" id="security">
+  <div class="section-label">// security</div>
   <h2>Built to block<br>real attacks</h2>
-  <p class="section-sub">AION was tested against 4 attack vectors — all blocked in production.</p>
   <div class="attacks">
     <div class="attack">
       <div class="attack-icon">🎭</div>
@@ -481,7 +586,7 @@
     <div class="attack">
       <div class="attack-icon">🎯</div>
       <h3>Scope Escalation</h3>
-      <p>Agent tries broader action than authorized — scope mismatch.</p>
+      <p>Agent tries broader action than authorized.</p>
       <span class="blocked">SCOPE_MISMATCH</span>
     </div>
     <div class="attack">
@@ -491,50 +596,26 @@
       <span class="blocked">UNAUTHORIZED</span>
     </div>
   </div>
-
   <div class="stats">
-    <div class="stat">
-      <span class="stat-num">RSA</span>
-      <div class="stat-label">2048-bit signing</div>
-    </div>
-    <div class="stat">
-      <span class="stat-num">17</span>
-      <div class="stat-label">tests passing</div>
-    </div>
-    <div class="stat">
-      <span class="stat-num">300s</span>
-      <div class="stat-label">token TTL</div>
-    </div>
-    <div class="stat">
-      <span class="stat-num">0</span>
-      <div class="stat-label">attacks passed</div>
-    </div>
+    <div class="stat"><span class="stat-num">RSA</span><div class="stat-label">2048-bit signing</div></div>
+    <div class="stat"><span class="stat-num">17</span><div class="stat-label">tests passing</div></div>
+    <div class="stat"><span class="stat-num">300s</span><div class="stat-label">token TTL</div></div>
+    <div class="stat"><span class="stat-num">0</span><div class="stat-label">attacks passed</div></div>
   </div>
-</section>
+</div>
 
 <hr class="divider">
 
 <!-- INSTALL -->
-<section id="install">
+<div class="install" id="install">
   <div class="section-label">// get started</div>
-  <h2>Up in 30 seconds</h2>
-  <p class="section-sub">Install from PyPI, point to the live API, start issuing tokens.</p>
-
-  <div class="install-box">
-    <span>$</span> pip install aion-protocol
-  </div>
-  <div class="install-box">
-    <span>$</span> curl -X POST https://aion-protocol.onrender.com/issue \<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-H "X-AION-API-Key: your-key" \<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-d '{"scope": "your.action"}'
-  </div>
-
+  <h2>Start now</h2>
   <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
-    <a class="btn-primary" href="https://aion-protocol.onrender.com/docs" target="_blank">API Documentation →</a>
+    <a class="btn-primary" href="https://pypi.org/project/aion-protocol/" target="_blank">pip install aion-protocol</a>
+    <a class="btn-secondary" href="https://aion-protocol.onrender.com/docs" target="_blank">API Documentation →</a>
     <a class="btn-secondary" href="https://github.com/Sourabh1845/aion-protocol" target="_blank">View on GitHub →</a>
-    <a class="btn-secondary" href="https://pypi.org/project/aion-protocol/" target="_blank">PyPI Package →</a>
   </div>
-</section>
+</div>
 
 <hr class="divider">
 
