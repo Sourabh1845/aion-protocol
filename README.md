@@ -1,100 +1,83 @@
-# AION v1 — Proof of Authority Governance
+# AION Protocol — Control What AI Agents Can Do
 
-AION is a minimal, executable authority layer for AI agents.
+AION is a cryptographic authority governance layer for AI agents. Every agent action requires a signed, scoped, one-time token — before anything happens.
 
-Agents cannot act unless explicitly authorized.
-Authority is verifiable, enforceable, single-use, and immutably logged.
-
-This repository contains a working proof of Agent Sovereignty.
-
----
-
-## What This Proves (Executable, Not Theoretical)
-
-This system proves that:
-
-- Authority can be ISSUED with a unique cryptographic identifier (JTI)
-- Authority must be VERIFIED before execution
-- Authority is ENFORCED at runtime
-- Authority cannot be reused or escalated
-- Every action is immutably logged with hash chaining
+**Live API:** https://aion-protocol.onrender.com  
+**Landing Page:** https://sourabh1845.github.io/aion-protocol  
+**PyPI:** https://pypi.org/project/aion-protocol/
 
 ---
 
-## Authority Lifecycle (Executed)
+## The Problem
 
-### 1. Issue Authority
-Authority is issued with:
-- scope (e.g. ops.read)
-- expiry
-- single-use constraint
+AI agents act without authorization. They can:
+- Execute the same action twice (replay attack)
+- Exceed their permitted scope
+- Act without any audit trail
 
-(issued internally via CLI)
-
----
-
-### 2. Enforce Authority (ALLOW)
-
-Command:
-python -m api.cli enforce <JTI> ops.read
-
-Result:
-{
-  "status": "ENFORCED",
-  "jti": "<JTI>",
-  "scope": "ops.read"
-}
+AION fixes this.
 
 ---
 
-### 3. Enforce Authority (DENY — Replay / Escalation)
+## How It Works
 
-Command:
-python -m api.cli enforce <JTI> ops.write
-
-Result:
-{
-  "error": "ENFORCEMENT_DENIED",
-  "reason": {
-    "error": "CONSUMED"
-  }
-}
-
-This proves:
-- Authority is single-use
-- Scope escalation is blocked
-- Replay attacks are prevented
+1. Agent requests a signed token from AION for a specific scope
+2. AION issues a time-limited, RSA-signed, one-time token
+3. Agent presents token before acting — AION verifies and allows or blocks
+4. Token is consumed — replay attempts are permanently blocked
 
 ---
 
-## Immutable Audit Log
+## Quickstart
 
-All actions are recorded in:
+```bash
+pip install aion-protocol
+```
 
-storage/audit_log.json
+**Issue a token:**
+```bash
+curl -X POST https://aion-protocol.onrender.com/issue \
+  -H "X-AION-API-Key: your-key" \
+  -H "Content-Type: application/json" \
+  -d '{"scope": "delete.file", "issuer": "my-agent"}'
+```
 
-Each record contains:
-- event type (GENESIS / ISSUE / VERIFY / ENFORCE)
-- timestamp
-- authority identifier (JTI)
-- scope
-- prev_hash for chain integrity
-
-Any modification breaks the chain.
-
----
-
-## What AION Prevents
-
-- Agents acting without permission
-- Reuse of consumed authority
-- Scope escalation beyond issuance
-- Unverifiable or silent agent actions
+**Enforce:**
+```bash
+curl -X POST https://aion-protocol.onrender.com/enforce \
+  -H "X-AION-API-Key: your-key" \
+  -H "Content-Type: application/json" \
+  -d '{"jti": "token-id-here", "scope": "delete.file"}'
+```
 
 ---
 
-## Status
+## What AION Blocks
 
-AION v1 authority lifecycle is complete, enforced, and reproducible.
+| Attack | Result |
+|--------|--------|
+| Fake token | `NOT_FOUND` |
+| Replay attack | `CONSUMED` |
+| Scope escalation | `SCOPE_MISMATCH` |
+| Invalid API key | `401 UNAUTHORIZED` |
 
-This is a foundational governance layer for sovereign AI systems.
+---
+
+## Stack
+
+- FastAPI + PostgreSQL + Redis (Upstash)
+- RSA 2048-bit token signing
+- Docker + Render cloud deployment
+- LangChain + CrewAI adapters included
+
+---
+
+## Links
+
+- [API Documentation](https://aion-protocol.onrender.com/docs)
+- [Landing Page](https://sourabh1845.github.io/aion-protocol)
+- [PyPI Package](https://pypi.org/project/aion-protocol/)
+
+---
+
+Built by Sourabh Ranjan Sahoo
