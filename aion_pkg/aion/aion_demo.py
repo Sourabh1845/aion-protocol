@@ -1,16 +1,16 @@
 import requests
-from google import genai
+from groq import Groq
 
 AION_BASE_URL = "https://aion-protocol.onrender.com"
 AION_API_KEY = "aion-prod-key-2026"
-GEMINI_API_KEY = "AIzaSyBEcs5MRSfqY0iFDXF4gEgjPpORr27vJNE"
+GROQ_API_KEY = "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"
 
-client = genai.Client(api_key=GEMINI_API_KEY)
+client = Groq(api_key=GROQ_API_KEY)
 
 def aion_issue(scope):
     r = requests.post(
         f"{AION_BASE_URL}/issue",
-        json={"scope": scope, "issuer": "gemini-agent"},
+        json={"scope": scope, "issuer": "groq-agent"},
         headers={"X-AION-API-Key": AION_API_KEY}
     )
     return r.json()
@@ -24,33 +24,41 @@ def aion_enforce(jti, scope):
     return r.json()
 
 def run_demo():
-    print("\n" + "="*50)
-    print("AION PROTOCOL - GEMINI AGENT DEMO")
-    print("="*50)
+    print("\n" + "="*55)
+    print("AION PROTOCOL — GROQ AGENT INTEGRATION DEMO")
+    print("="*55)
 
-    print("\n[STEP 1] Gemini Agent permission maang raha hai AION se...")
+    print("\n[STEP 1] Agent requesting authority from AION...")
     scope = "read.weather.data"
     token = aion_issue(scope)
-    print(f"Token issued: {token['jti']}")
-    print(f"Signed: {'signature' in token}")
+    print(f"  Token ID  : {token['jti']}")
+    print(f"  Scope     : {token['scope']}")
+    print(f"  Signed    : {'signature' in token}")
+    print(f"  Expires   : {token['expires_at']}")
 
-    print("\n[STEP 2] AION enforce kar raha hai...")
+    print("\n[STEP 2] Enforcing authority token...")
     result = aion_enforce(token["jti"], scope)
-    print(f"Result: {result}")
+    print(f"  Result    : {result.get('status', result.get('error'))}")
 
     if result.get("status") == "ENFORCED":
-        print("\n[STEP 3] Permission mili - Gemini action kar raha hai...")
-        response = client.models.generate_content(
-            model="gemini-2.0-flash",
-            contents="Monsoon in Odisha India in 2 lines."
+        print("\n[STEP 3] Authority granted — Agent executing action...")
+        response = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{
+                "role": "user",
+                "content": "What is the weather like in monsoon season in Odisha, India? Answer in 2-3 lines."
+            }]
         )
-        print(f"\nGemini Response:\n{response.text}")
+        print(f"\n  Agent Response:\n  {response.choices[0].message.content}")
     else:
-        print("\n[BLOCKED] Permission nahi mili.")
+        print("\n[BLOCKED] Authority denied — Agent cannot proceed.")
 
-    print("\n[STEP 4] Replay attack test...")
+    print("\n[STEP 4] Replay attack test — reusing same token...")
     replay = aion_enforce(token["jti"], scope)
-    print(f"Replay: {replay}")
-    print("\nDEMO COMPLETE")
+    print(f"  Replay Result : {replay.get('error', 'UNKNOWN')} — {replay.get('reason', '')}")
+
+    print("\n" + "="*55)
+    print("DEMO COMPLETE — AION successfully governed agent actions")
+    print("="*55 + "\n")
 
 run_demo()

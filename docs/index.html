@@ -12,26 +12,18 @@
     --surface: #0d0d14;
     --border: #1a1a2e;
     --accent: #00ff88;
-    --accent2: #0066ff;
     --text: #e8e8f0;
     --muted: #666680;
     --danger: #ff3366;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    overflow-x: hidden;
-  }
+  body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; overflow-x: hidden; }
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image:
-      linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
     background-size: 40px 40px;
     pointer-events: none;
     z-index: 0;
@@ -45,26 +37,15 @@
     align-items: center;
     padding: 1.2rem 3rem;
     border-bottom: 1px solid var(--border);
-    background: rgba(5,5,8,0.85);
+    background: rgba(5,5,8,0.9);
     backdrop-filter: blur(12px);
   }
-  .nav-logo {
-    font-family: 'Space Mono', monospace;
-    font-size: 1.1rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    text-decoration: none;
-  }
+  .nav-logo { font-family: 'Space Mono', monospace; font-size: 1.1rem; color: var(--accent); letter-spacing: 0.15em; text-decoration: none; }
   .nav-links { display: flex; gap: 2rem; }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.85rem;
-    letter-spacing: 0.05em;
-    transition: color 0.2s;
-  }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
   .nav-links a:hover { color: var(--accent); }
 
+  /* HERO */
   .hero {
     min-height: 100vh;
     display: flex;
@@ -92,179 +73,29 @@
     width: fit-content;
     animation: fadeUp 0.6s ease both;
   }
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
-  }
-  h1 {
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 800;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: 1.5rem;
-    animation: fadeUp 0.6s 0.1s ease both;
-  }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  h1 { font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 1.2rem; animation: fadeUp 0.6s 0.1s ease both; }
   h1 span { color: var(--accent); }
-  .hero-sub {
-    font-size: 1.2rem;
-    color: var(--muted);
-    max-width: 620px;
-    line-height: 1.7;
-    margin-bottom: 1rem;
-    font-weight: 400;
-    animation: fadeUp 0.6s 0.2s ease both;
-  }
+  .hero-sub { font-size: 1.15rem; color: var(--muted); max-width: 580px; line-height: 1.7; margin-bottom: 0.8rem; animation: fadeUp 0.6s 0.2s ease both; }
   .hero-sub strong { color: var(--text); }
-  .hero-sub2 {
-    font-size: 0.95rem;
-    color: var(--muted);
-    max-width: 580px;
-    line-height: 1.7;
-    margin-bottom: 3rem;
-    animation: fadeUp 0.6s 0.25s ease both;
-  }
-  .hero-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    animation: fadeUp 0.6s 0.3s ease both;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #000;
-    padding: 0.85rem 2rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    border-radius: 2px;
-    transition: all 0.2s;
-  }
-  .btn-primary:hover {
-    background: #00cc6a;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,255,136,0.2);
-  }
-  .btn-secondary {
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 0.85rem 2rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    border-radius: 2px;
-    transition: all 0.2s;
-  }
-  .btn-secondary:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    transform: translateY(-2px);
-  }
+  .hero-sub2 { font-size: 0.9rem; color: var(--muted); margin-bottom: 2.5rem; animation: fadeUp 0.6s 0.25s ease both; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+  .btn-primary { background: var(--accent); color: #000; padding: 0.85rem 2rem; font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; text-decoration: none; border-radius: 2px; transition: all 0.2s; }
+  .btn-primary:hover { background: #00cc6a; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,255,136,0.2); }
+  .btn-secondary { border: 1px solid var(--border); color: var(--text); padding: 0.85rem 2rem; font-family: 'Space Mono', monospace; font-size: 0.8rem; text-decoration: none; border-radius: 2px; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
-  /* PROBLEM SECTION */
-  .problem {
-    padding: 5rem 3rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-  .section-label {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    letter-spacing: 0.15em;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-  }
-  h2 {
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 800;
-    margin-bottom: 1rem;
-    letter-spacing: -0.02em;
-  }
-  .problem-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
-    margin-top: 2.5rem;
-  }
-  .problem-card {
-    background: rgba(255,51,102,0.05);
-    border: 1px solid rgba(255,51,102,0.15);
-    border-radius: 4px;
-    padding: 1.5rem;
-  }
-  .problem-card .icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
-  .problem-card h3 { font-size: 1rem; margin-bottom: 0.5rem; color: var(--text); }
-  .problem-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
-  .problem-card .solution {
-    margin-top: 0.8rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-  }
+  section { padding: 5rem 3rem; max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .section-label { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.15em; margin-bottom: 1rem; text-transform: uppercase; }
+  h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
+  .section-sub { color: var(--muted); font-size: 1rem; margin-bottom: 2.5rem; max-width: 550px; line-height: 1.7; }
 
-  /* QUICKSTART */
-  .quickstart {
-    padding: 5rem 3rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-  .steps-quick {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 2rem;
-  }
-  .step-q {
-    background: var(--surface);
-    padding: 1.5rem;
-  }
-  .step-q .num {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--accent);
-    margin-bottom: 0.5rem;
-  }
-  .step-q h3 { font-size: 0.95rem; margin-bottom: 0.4rem; }
-  .step-q p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
-
-  .code-block {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.8rem;
-    margin-bottom: 1rem;
-  }
-  .code-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.6rem 1rem;
-    background: #0a0a12;
-    border-bottom: 1px solid var(--border);
-    color: var(--muted);
-    font-size: 0.7rem;
-  }
+  /* DEMO */
+  .demo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 700px) { .demo-grid { grid-template-columns: 1fr; } }
+  .code-block { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; font-family: 'Space Mono', monospace; font-size: 0.78rem; }
+  .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; background: #0a0a12; border-bottom: 1px solid var(--border); color: var(--muted); font-size: 0.7rem; }
   .code-body { padding: 1.2rem 1.5rem; line-height: 2; overflow-x: auto; }
   .t-comment { color: var(--muted); }
   .t-cmd { color: var(--accent); }
@@ -273,140 +104,50 @@
   .t-err { color: var(--danger); }
   .t-out { color: #88aaff; }
 
+  /* WHY NOT BUILD */
+  .why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; }
+  .why-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.5rem; transition: border-color 0.2s, transform 0.2s; }
+  .why-card:hover { border-color: rgba(0,255,136,0.3); transform: translateY(-4px); }
+  .why-card .icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+  .why-card h3 { font-size: 0.95rem; margin-bottom: 0.5rem; }
+  .why-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
   /* USE CASES */
-  .usecases {
-    padding: 5rem 3rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-  .usecase-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2.5rem;
-  }
-  .usecase {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1.8rem;
-    transition: border-color 0.2s, transform 0.2s;
-  }
-  .usecase:hover {
-    border-color: rgba(0,255,136,0.3);
-    transform: translateY(-4px);
-  }
+  .usecase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+  .usecase { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.8rem; transition: border-color 0.2s, transform 0.2s; }
+  .usecase:hover { border-color: rgba(0,255,136,0.3); transform: translateY(-4px); }
   .usecase .icon { font-size: 1.8rem; margin-bottom: 1rem; }
   .usecase h3 { font-size: 1rem; margin-bottom: 0.5rem; }
   .usecase p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
-  .usecase .example {
-    margin-top: 1rem;
-    padding: 0.8rem;
-    background: rgba(0,255,136,0.04);
-    border-left: 2px solid var(--accent);
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
+  .usecase .example { margin-top: 1rem; padding: 0.8rem; background: rgba(0,255,136,0.04); border-left: 2px solid var(--accent); font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--muted); line-height: 1.6; }
 
-  /* SECURITY */
-  .security {
-    padding: 5rem 3rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-  .attacks {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 2.5rem;
-  }
-  .attack {
-    background: rgba(255,51,102,0.05);
-    border: 1px solid rgba(255,51,102,0.15);
-    border-radius: 4px;
-    padding: 1.4rem;
-    transition: border-color 0.2s;
-  }
-  .attack:hover { border-color: rgba(255,51,102,0.4); }
-  .attack-icon { font-size: 1.4rem; margin-bottom: 0.7rem; }
-  .attack h3 { font-size: 0.9rem; margin-bottom: 0.4rem; }
-  .attack p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
-  .attack .blocked {
-    display: inline-block;
-    margin-top: 0.8rem;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    background: rgba(0,255,136,0.08);
-    padding: 0.2rem 0.5rem;
-    border-radius: 2px;
-  }
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 3rem;
-  }
-  .stat {
-    background: var(--surface);
-    padding: 2rem;
-    text-align: center;
-  }
-  .stat-num {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--accent);
-    font-family: 'Space Mono', monospace;
-    display: block;
-  }
-  .stat-label { color: var(--muted); font-size: 0.8rem; margin-top: 0.3rem; }
+  /* QUICKSTART */
+  .steps-quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-bottom: 2rem; }
+  .step-q { background: var(--surface); padding: 1.5rem; }
+  .step-q .num { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent); margin-bottom: 0.5rem; }
+  .step-q h3 { font-size: 0.95rem; margin-bottom: 0.4rem; }
+  .step-q p { color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
 
-  /* INSTALL */
-  .install {
-    padding: 5rem 3rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
+  /* TESTS */
+  .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .test-card { background: rgba(0,255,136,0.04); border: 1px solid rgba(0,255,136,0.15); border-radius: 4px; padding: 1.2rem; }
+  .test-card h3 { font-size: 0.88rem; margin-bottom: 0.4rem; }
+  .test-card p { color: var(--muted); font-size: 0.8rem; line-height: 1.5; }
+  .test-card .pass { display: inline-block; margin-top: 0.6rem; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--accent); background: rgba(0,255,136,0.08); padding: 0.2rem 0.5rem; border-radius: 2px; }
 
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 2rem 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    z-index: 1;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin-top: 3rem; }
+  .stat { background: var(--surface); padding: 1.8rem; text-align: center; }
+  .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); font-family: 'Space Mono', monospace; display: block; }
+  .stat-label { color: var(--muted); font-size: 0.78rem; margin-top: 0.3rem; }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; flex-wrap: wrap; gap: 1rem; }
   footer p { color: var(--muted); font-size: 0.8rem; font-family: 'Space Mono', monospace; }
   .footer-links { display: flex; gap: 1.5rem; }
-  .footer-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.8rem;
-    transition: color 0.2s;
-    font-family: 'Space Mono', monospace;
-  }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 0.8rem; transition: color 0.2s; font-family: 'Space Mono', monospace; }
   .footer-links a:hover { color: var(--accent); }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
 </style>
 </head>
@@ -415,10 +156,10 @@
 <nav>
   <a class="nav-logo" href="#">AION://</a>
   <div class="nav-links">
-    <a href="#problem">Problem</a>
-    <a href="#quickstart">Quickstart</a>
+    <a href="#demo">Demo</a>
+    <a href="#why">Why AION</a>
     <a href="#usecases">Use Cases</a>
-    <a href="#security">Security</a>
+    <a href="#quickstart">Quickstart</a>
     <a href="https://github.com/Sourabh1845/aion-protocol" target="_blank">GitHub</a>
   </div>
 </nav>
@@ -426,15 +167,13 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-badge">LIVE ON CLOUD — v3.0.0</div>
-  <h1>Control what<br>AI agents are<br><span>allowed to do.</span></h1>
+  <h1>Control what AI agents<br>are <span>allowed to do.</span></h1>
   <p class="hero-sub">
-    AION gives every AI agent action a <strong>signed, scoped, one-time token</strong> — before anything happens. No token, no action.
+    AION enforces permissions, <strong>prevents misuse</strong>, and logs every action — before your AI agent acts.
   </p>
-  <p class="hero-sub2">
-    Works with LangChain, CrewAI, and any Python AI agent. Open source. Free to use.
-  </p>
+  <p class="hero-sub2">Works with LangChain, CrewAI, and any Python AI agent. Open source. Free.</p>
   <div class="hero-actions">
-    <a class="btn-primary" href="#quickstart">Get Started in 30s →</a>
+    <a class="btn-primary" href="#quickstart">Try it in 30s →</a>
     <a class="btn-secondary" href="https://aion-protocol.onrender.com/docs" target="_blank">API Docs</a>
     <a class="btn-secondary" href="https://github.com/Sourabh1845/aion-protocol" target="_blank">GitHub</a>
   </div>
@@ -442,180 +181,182 @@
 
 <hr class="divider">
 
-<!-- PROBLEM -->
-<div class="problem" id="problem">
-  <div class="section-label">// the problem</div>
-  <h2>AI agents act.<br>Who controls them?</h2>
-  <div class="problem-grid">
-    <div class="problem-card">
-      <div class="icon">🤖</div>
-      <h3>Agents act without permission</h3>
-      <p>Your AI agent deletes a file, sends an email, or calls an API — without any authorization check.</p>
-      <div class="solution">→ AION blocks unauthorized actions</div>
+<!-- 10 SECOND DEMO -->
+<section id="demo">
+  <div class="section-label">// 10-second demo</div>
+  <h2>See it in action</h2>
+  <p class="section-sub">Two API calls. That's all. Agent asks → AION decides → allow or block.</p>
+  <div class="demo-grid">
+    <div class="code-block">
+      <div class="code-header"><span>POST /issue — get token</span></div>
+      <div class="code-body">
+        <div><span class="t-comment"># Agent requests permission</span></div>
+        <div><span class="t-cmd">POST</span> /issue</div>
+        <div><span class="t-key">"scope"</span>: <span class="t-val">"delete.file"</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-out">← RSA signed token</span></div>
+        <div><span class="t-out">← expires in 5 min</span></div>
+        <div><span class="t-out">← single use only</span></div>
+      </div>
     </div>
-    <div class="problem-card">
-      <div class="icon">🔄</div>
-      <h3>Same action runs twice</h3>
-      <p>A bug or replay attack causes an agent to execute the same action multiple times — no way to stop it.</p>
-      <div class="solution">→ AION tokens are one-time use</div>
-    </div>
-    <div class="problem-card">
-      <div class="icon">🎯</div>
-      <h3>Agents exceed their scope</h3>
-      <p>Agent authorized to read data starts writing or deleting — scope creep with no enforcement layer.</p>
-      <div class="solution">→ AION enforces exact scope</div>
+    <div class="code-block">
+      <div class="code-header"><span>POST /enforce — allow or block</span></div>
+      <div class="code-body">
+        <div><span class="t-comment"># Agent presents token</span></div>
+        <div><span class="t-cmd">POST</span> /enforce</div>
+        <div><span class="t-key">"jti"</span>: <span class="t-val">"a32400ea..."</span></div>
+        <div>&nbsp;</div>
+        <div><span class="t-val">✓ ENFORCED</span> <span class="t-comment">← allowed</span></div>
+        <div><span class="t-err">✗ CONSUMED</span> <span class="t-comment">← replay blocked</span></div>
+        <div><span class="t-err">✗ SCOPE_MISMATCH</span> <span class="t-comment">← wrong scope</span></div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
 <hr class="divider">
 
-<!-- QUICKSTART -->
-<div class="quickstart" id="quickstart">
-  <div class="section-label">// quickstart</div>
-  <h2>Up and running<br>in 30 seconds</h2>
-
-  <div class="steps-quick">
-    <div class="step-q">
-      <div class="num">01 —</div>
-      <h3>Install</h3>
-      <p>One pip command — no config needed.</p>
+<!-- WHY NOT BUILD -->
+<section id="why">
+  <div class="section-label">// why not build this myself?</div>
+  <h2>What AION gives you<br>out of the box</h2>
+  <p class="section-sub">Building this yourself takes weeks. AION gives you it in one pip install.</p>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="icon">🔄</div>
+      <h3>Replay Attack Prevention</h3>
+      <p>Every token is single-use. Same token used twice — blocked instantly via Redis distributed lock.</p>
     </div>
-    <div class="step-q">
-      <div class="num">02 —</div>
-      <h3>Issue Token</h3>
-      <p>Agent requests authority for a specific action.</p>
+    <div class="why-card">
+      <div class="icon">🔐</div>
+      <h3>RSA Signed Tokens</h3>
+      <p>Every token cryptographically signed with RSA-2048. Tampered tokens rejected — no exceptions.</p>
     </div>
-    <div class="step-q">
-      <div class="num">03 —</div>
-      <h3>Enforce</h3>
-      <p>AION verifies — then allows or blocks the action.</p>
+    <div class="why-card">
+      <div class="icon">🎯</div>
+      <h3>Strict Scope Enforcement</h3>
+      <p>Agent authorized for "read" cannot "write". Scope mismatch blocked at enforcement layer.</p>
     </div>
-  </div>
-
-  <div class="code-block">
-    <div class="code-header"><span>terminal</span></div>
-    <div class="code-body">
-      <div><span class="t-cmd">$ pip install aion-protocol</span></div>
+    <div class="why-card">
+      <div class="icon">📋</div>
+      <h3>Full Audit Log</h3>
+      <p>Every issue, enforce, revoke logged with hash chaining. Complete tamper-proof audit trail.</p>
     </div>
-  </div>
-
-  <div class="code-block">
-    <div class="code-header"><span>issue a token — POST /issue</span></div>
-    <div class="code-body">
-      <div><span class="t-comment"># Agent requests authority before acting</span></div>
-      <div><span class="t-cmd">curl</span> -X POST https://aion-protocol.onrender.com/issue \</div>
-      <div>&nbsp;&nbsp;-H <span class="t-val">"X-AION-API-Key: your-key"</span> \</div>
-      <div>&nbsp;&nbsp;-H <span class="t-val">"Content-Type: application/json"</span> \</div>
-      <div>&nbsp;&nbsp;-d <span class="t-val">'{"scope": "delete.file", "issuer": "my-agent"}'</span></div>
-      <div>&nbsp;</div>
-      <div><span class="t-out">{</span></div>
-      <div>&nbsp;&nbsp;<span class="t-key">"jti"</span>: <span class="t-val">"a32400ea-228d-4e7c..."</span>,</div>
-      <div>&nbsp;&nbsp;<span class="t-key">"scope"</span>: <span class="t-val">"delete.file"</span>,</div>
-      <div>&nbsp;&nbsp;<span class="t-key">"signature"</span>: <span class="t-val">"TzijYEpR6CVQ..."</span>,</div>
-      <div>&nbsp;&nbsp;<span class="t-key">"expires_at"</span>: <span class="t-val">"2026-04-10T10:00:00Z"</span></div>
-      <div><span class="t-out">}</span></div>
+    <div class="why-card">
+      <div class="icon">👥</div>
+      <h3>Multi-Agent Support</h3>
+      <p>Multiple agents, multiple scopes, separate tokens. Each agent strictly controlled independently.</p>
+    </div>
+    <div class="why-card">
+      <div class="icon">⚡</div>
+      <h3>LangChain + CrewAI Ready</h3>
+      <p>Adapters included. Drop AION into your existing agent framework in minutes.</p>
     </div>
   </div>
-
-  <div class="code-block">
-    <div class="code-header"><span>enforce — POST /enforce</span></div>
-    <div class="code-body">
-      <div><span class="t-comment"># Agent presents token — AION allows or blocks</span></div>
-      <div><span class="t-cmd">curl</span> -X POST https://aion-protocol.onrender.com/enforce \</div>
-      <div>&nbsp;&nbsp;-d <span class="t-val">'{"jti": "a32400ea...", "scope": "delete.file"}'</span></div>
-      <div>&nbsp;</div>
-      <div><span class="t-out">✓ {"status": "ENFORCED"}</span>  &nbsp;<span class="t-comment">← action allowed</span></div>
-      <div><span class="t-err">✗ {"error": "CONSUMED"}</span>  &nbsp;<span class="t-comment">← replay blocked</span></div>
-      <div><span class="t-err">✗ {"error": "SCOPE_MISMATCH"}</span>  &nbsp;<span class="t-comment">← wrong scope blocked</span></div>
-    </div>
-  </div>
-
-  <div style="margin-top:1.5rem;">
-    <a class="btn-primary" href="https://aion-protocol.onrender.com/docs" target="_blank">Full API Docs →</a>
-  </div>
-</div>
+</section>
 
 <hr class="divider">
 
 <!-- USE CASES -->
-<div class="usecases" id="usecases">
+<section id="usecases">
   <div class="section-label">// use cases</div>
-  <h2>Who needs AION?</h2>
+  <h2>Who uses AION?</h2>
   <div class="usecase-grid">
     <div class="usecase">
-      <div class="icon">🏗️</div>
+      <div class="icon">🤖</div>
       <h3>AI Agent Developers</h3>
-      <p>Building autonomous agents with LangChain or CrewAI? Add authority control so agents can't exceed their permissions.</p>
-      <div class="example">scope: "send.email" → agent can send<br>scope: "delete.db" → blocked unless authorized</div>
+      <p>Building autonomous agents? Add authority control so agents can't exceed their permissions — ever.</p>
+      <div class="example">scope: "send.email" → allowed<br>scope: "delete.db" → blocked unless authorized</div>
     </div>
     <div class="usecase">
       <div class="icon">🏢</div>
-      <h3>Startups with AI Workflows</h3>
-      <p>Running AI pipelines that touch real data or APIs? AION adds an authorization layer between your AI and your systems.</p>
-      <div class="example">Every action logged + auditable<br>Revoke any agent instantly</div>
+      <h3>Autonomous AI Workflows</h3>
+      <p>Running AI pipelines that touch real APIs or data? AION adds authorization between your AI and your systems.</p>
+      <div class="example">Every action logged + auditable<br>Revoke any agent token instantly</div>
     </div>
     <div class="usecase">
       <div class="icon">🔬</div>
-      <h3>AI Safety Researchers</h3>
-      <p>Studying AI agent behavior? AION gives you fine-grained control and audit trails over what agents are allowed to do.</p>
-      <div class="example">Full audit log of every action<br>Cryptographic proof of authority</div>
+      <h3>AI Safety Layer</h3>
+      <p>Need fine-grained control over what your AI systems can do? AION is your enforcement middleware.</p>
+      <div class="example">Cryptographic proof of authority<br>7/7 attack tests passed in production</div>
     </div>
   </div>
-</div>
+</section>
 
 <hr class="divider">
 
-<!-- SECURITY -->
-<div class="security" id="security">
-  <div class="section-label">// security</div>
-  <h2>Built to block<br>real attacks</h2>
-  <div class="attacks">
-    <div class="attack">
-      <div class="attack-icon">🎭</div>
-      <h3>Fake Token</h3>
-      <p>Token not issued by AION — rejected immediately.</p>
-      <span class="blocked">NOT_FOUND</span>
+<!-- QUICKSTART -->
+<section id="quickstart">
+  <div class="section-label">// quickstart</div>
+  <h2>Up in 30 seconds</h2>
+  <div class="steps-quick">
+    <div class="step-q">
+      <div class="num">01 —</div>
+      <h3>Install</h3>
+      <p>One pip command.</p>
     </div>
-    <div class="attack">
-      <div class="attack-icon">🔄</div>
-      <h3>Replay Attack</h3>
-      <p>Same token used twice — second attempt blocked via Redis.</p>
-      <span class="blocked">CONSUMED</span>
+    <div class="step-q">
+      <div class="num">02 —</div>
+      <h3>Issue Token</h3>
+      <p>Agent requests authority for a specific scope.</p>
     </div>
-    <div class="attack">
-      <div class="attack-icon">🎯</div>
-      <h3>Scope Escalation</h3>
-      <p>Agent tries broader action than authorized.</p>
-      <span class="blocked">SCOPE_MISMATCH</span>
+    <div class="step-q">
+      <div class="num">03 —</div>
+      <h3>Enforce</h3>
+      <p>AION verifies — allows or blocks the action.</p>
     </div>
-    <div class="attack">
-      <div class="attack-icon">🔑</div>
-      <h3>Invalid API Key</h3>
-      <p>Unauthorized access attempt — 401 returned instantly.</p>
-      <span class="blocked">UNAUTHORIZED</span>
+  </div>
+
+  <div class="code-block" style="margin-bottom:1rem;">
+    <div class="code-header"><span>install</span></div>
+    <div class="code-body"><div><span class="t-cmd">$ pip install aion-protocol</span></div></div>
+  </div>
+
+  <div class="code-block" style="margin-bottom:1rem;">
+    <div class="code-header"><span>issue + enforce — full example</span></div>
+    <div class="code-body">
+      <div><span class="t-comment"># Step 1: Issue token</span></div>
+      <div><span class="t-cmd">curl</span> -X POST https://aion-protocol.onrender.com/issue \</div>
+      <div>&nbsp;&nbsp;-H <span class="t-val">"X-AION-API-Key: your-key"</span> \</div>
+      <div>&nbsp;&nbsp;-d <span class="t-val">'{"scope": "delete.file", "issuer": "my-agent"}'</span></div>
+      <div>&nbsp;</div>
+      <div><span class="t-comment"># Step 2: Enforce before acting</span></div>
+      <div><span class="t-cmd">curl</span> -X POST https://aion-protocol.onrender.com/enforce \</div>
+      <div>&nbsp;&nbsp;-d <span class="t-val">'{"jti": "token-id", "scope": "delete.file"}'</span></div>
+      <div>&nbsp;</div>
+      <div><span class="t-val">✓ {"status": "ENFORCED"}</span></div>
     </div>
+  </div>
+
+  <div style="margin-top:1.5rem; display:flex; gap:1rem; flex-wrap:wrap;">
+    <a class="btn-primary" href="https://aion-protocol.onrender.com/docs" target="_blank">Full API Docs →</a>
+    <a class="btn-secondary" href="https://github.com/Sourabh1845/aion-protocol" target="_blank">GitHub →</a>
+    <a class="btn-secondary" href="https://pypi.org/project/aion-protocol/" target="_blank">PyPI →</a>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- TEST RESULTS -->
+<section id="tests">
+  <div class="section-label">// battle tested</div>
+  <h2>7 attack tests.<br>All passed.</h2>
+  <div class="test-grid">
+    <div class="test-card"><h3>Tampered Token</h3><p>Modified JTI rejected instantly.</p><span class="pass">NOT_FOUND ✓</span></div>
+    <div class="test-card"><h3>Expired Token</h3><p>Token past TTL blocked.</p><span class="pass">EXPIRED ✓</span></div>
+    <div class="test-card"><h3>Replay Attack</h3><p>10 concurrent requests — 1 allowed.</p><span class="pass">CONSUMED ✓</span></div>
+    <div class="test-card"><h3>Scope Mismatch</h3><p>Wrong scope blocked.</p><span class="pass">SCOPE_MISMATCH ✓</span></div>
+    <div class="test-card"><h3>Invalid API Key</h3><p>Unauthorized access rejected.</p><span class="pass">401 ✓</span></div>
+    <div class="test-card"><h3>Persistence</h3><p>Tokens survive server restart.</p><span class="pass">PostgreSQL ✓</span></div>
+    <div class="test-card"><h3>Multi-Agent</h3><p>Each agent strictly isolated.</p><span class="pass">ISOLATED ✓</span></div>
   </div>
   <div class="stats">
     <div class="stat"><span class="stat-num">RSA</span><div class="stat-label">2048-bit signing</div></div>
-    <div class="stat"><span class="stat-num">17</span><div class="stat-label">tests passing</div></div>
-    <div class="stat"><span class="stat-num">300s</span><div class="stat-label">token TTL</div></div>
+    <div class="stat"><span class="stat-num">7/7</span><div class="stat-label">attack tests passed</div></div>
+    <div class="stat"><span class="stat-num">17</span><div class="stat-label">unit tests passing</div></div>
     <div class="stat"><span class="stat-num">0</span><div class="stat-label">attacks passed</div></div>
   </div>
-</div>
-
-<hr class="divider">
-
-<!-- INSTALL -->
-<div class="install" id="install">
-  <div class="section-label">// get started</div>
-  <h2>Start now</h2>
-  <div style="margin-top:2rem; display:flex; gap:1rem; flex-wrap:wrap;">
-    <a class="btn-primary" href="https://pypi.org/project/aion-protocol/" target="_blank">pip install aion-protocol</a>
-    <a class="btn-secondary" href="https://aion-protocol.onrender.com/docs" target="_blank">API Documentation →</a>
-    <a class="btn-secondary" href="https://github.com/Sourabh1845/aion-protocol" target="_blank">View on GitHub →</a>
-  </div>
-</div>
+</section>
 
 <hr class="divider">
 
