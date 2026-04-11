@@ -3,7 +3,7 @@ from groq import Groq
 
 AION_BASE_URL = "https://aion-protocol.onrender.com"
 AION_API_KEY = "aion-prod-key-2026"
-GROQ_API_KEY = "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"
+GROQ_API_KEY = "YOUR_GROQ_API_KEY_HERE"
 
 client = Groq(api_key=GROQ_API_KEY)
 
