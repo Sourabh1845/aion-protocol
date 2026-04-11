@@ -18,3 +18,4 @@ audit_log.json
 # OS / editor noise
 .DS_Store
 Thumbs.db
+.env 
