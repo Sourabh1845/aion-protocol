@@ -377,7 +377,164 @@
 </section>
 
 <hr class="divider">
+<!-- LIVE DEMO -->
+<section id="live-demo">
+  <div class="section-label">// try it live</div>
+  <h2>Test AION right now.</h2>
+  <p class="section-sub">No install. No signup. Real API — real response.</p>
 
+  <div style="background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:2rem; max-width:600px;">
+    
+    <div style="margin-bottom:1.5rem;">
+      <label style="font-family:'Space Mono',monospace; font-size:0.75rem; color:var(--muted); display:block; margin-bottom:0.5rem;">SCOPE (what action you want to authorize)</label>
+      <input id="scope-input" type="text" placeholder="e.g. read.files" value="read.files"
+        style="width:100%; padding:0.8rem 1rem; background:#0a0a12; border:1px solid var(--border); border-radius:2px; color:var(--text); font-family:'Space Mono',monospace; font-size:0.85rem; outline:none;">
+    </div>
+
+    <button onclick="issueToken()"
+      style="background:var(--accent); color:#000; padding:0.8rem 1.5rem; font-family:'Space Mono',monospace; font-size:0.8rem; font-weight:700; border:none; border-radius:2px; cursor:pointer; margin-bottom:1.5rem; width:100%;">
+      Issue Signed Token →
+    </button>
+
+    <div id="issue-result" style="display:none; margin-bottom:1.5rem;">
+      <div style="font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); margin-bottom:0.5rem;">RESPONSE</div>
+      <div id="issue-output" style="background:#0a0a12; border:1px solid var(--border); border-radius:2px; padding:1rem; font-family:'Space Mono',monospace; font-size:0.75rem; color:var(--accent); word-break:break-all; line-height:1.8;"></div>
+      
+      <button onclick="enforceToken()"
+        style="background:transparent; color:var(--accent); padding:0.8rem 1.5rem; font-family:'Space Mono',monospace; font-size:0.8rem; font-weight:700; border:1px solid var(--accent); border-radius:2px; cursor:pointer; margin-top:1rem; width:100%;">
+        Enforce Token →
+      </button>
+    </div>
+
+    <div id="enforce-result" style="display:none; margin-bottom:1.5rem;">
+      <div style="font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); margin-bottom:0.5rem;">ENFORCEMENT RESULT</div>
+      <div id="enforce-output" style="background:#0a0a12; border:1px solid var(--border); border-radius:2px; padding:1rem; font-family:'Space Mono',monospace; font-size:0.75rem; word-break:break-all; line-height:1.8;"></div>
+
+      <button onclick="replayToken()"
+        style="background:transparent; color:var(--danger); padding:0.8rem 1.5rem; font-family:'Space Mono',monospace; font-size:0.8rem; font-weight:700; border:1px solid var(--danger); border-radius:2px; cursor:pointer; margin-top:1rem; width:100%;">
+        Try Replay Attack →
+      </button>
+    </div>
+
+    <div id="replay-result" style="display:none;">
+      <div style="font-family:'Space Mono',monospace; font-size:0.7rem; color:var(--muted); margin-bottom:0.5rem;">REPLAY ATTACK RESULT</div>
+      <div id="replay-output" style="background:#0a0a12; border:1px solid var(--border); border-radius:2px; padding:1rem; font-family:'Space Mono',monospace; font-size:0.75rem; color:var(--danger); word-break:break-all; line-height:1.8;"></div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<script>
+  const AION_URL = "https://aion-protocol.onrender.com";
+  const API_KEY = "aion-prod-key-2026";
+  let currentJti = null;
+  let currentScope = null;
+
+  async function issueToken() {
+    const scope = document.getElementById('scope-input').value.trim();
+    if (!scope) return;
+    currentScope = scope;
+
+    const btn = event.target;
+    btn.textContent = "Issuing...";
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${AION_URL}/issue`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-AION-API-Key': API_KEY
+        },
+        body: JSON.stringify({ scope: scope, issuer: "web-demo" })
+      });
+      const data = await res.json();
+      currentJti = data.jti;
+
+      document.getElementById('issue-output').innerHTML =
+        `<span style="color:#ff9966">jti</span>: ${data.jti}<br>` +
+        `<span style="color:#ff9966">scope</span>: ${data.scope}<br>` +
+        `<span style="color:#ff9966">signed</span>: ${'signature' in data ? '✓ RSA-2048' : 'no'}<br>` +
+        `<span style="color:#ff9966">expires</span>: ${data.expires_at}<br>` +
+        `<span style="color:#ff9966">signature</span>: ${data.signature ? data.signature.substring(0,40) + '...' : 'none'}`;
+
+      document.getElementById('issue-result').style.display = 'block';
+      document.getElementById('enforce-result').style.display = 'none';
+      document.getElementById('replay-result').style.display = 'none';
+    } catch(e) {
+      document.getElementById('issue-output').textContent = 'Error: ' + e.message;
+      document.getElementById('issue-result').style.display = 'block';
+    }
+
+    btn.textContent = "Issue Signed Token →";
+    btn.disabled = false;
+  }
+
+  async function enforceToken() {
+    if (!currentJti) return;
+    const btn = event.target;
+    btn.textContent = "Enforcing...";
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${AION_URL}/enforce`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-AION-API-Key': API_KEY
+        },
+        body: JSON.stringify({ jti: currentJti, scope: currentScope })
+      });
+      const data = await res.json();
+      const enforceOut = document.getElementById('enforce-output');
+
+      if (data.status === 'ENFORCED') {
+        enforceOut.style.color = 'var(--accent)';
+        enforceOut.innerHTML = `✓ STATUS: ENFORCED<br>Agent action authorized by AION`;
+      } else {
+        enforceOut.style.color = 'var(--danger)';
+        enforceOut.innerHTML = `✗ STATUS: ${data.error || 'DENIED'}<br>Reason: ${data.reason || 'blocked'}`;
+      }
+      document.getElementById('enforce-result').style.display = 'block';
+    } catch(e) {
+      document.getElementById('enforce-output').textContent = 'Error: ' + e.message;
+      document.getElementById('enforce-result').style.display = 'block';
+    }
+
+    btn.textContent = "Enforce Token →";
+    btn.disabled = false;
+  }
+
+  async function replayToken() {
+    if (!currentJti) return;
+    const btn = event.target;
+    btn.textContent = "Attempting replay...";
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${AION_URL}/enforce`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-AION-API-Key': API_KEY
+        },
+        body: JSON.stringify({ jti: currentJti, scope: currentScope })
+      });
+      const data = await res.json();
+      const replayOut = document.getElementById('replay-output');
+      replayOut.innerHTML = `✗ REPLAY BLOCKED<br>Reason: ${data.reason || data.error}<br><br>Same token cannot be used twice.<br>AION prevented the replay attack.`;
+      document.getElementById('replay-result').style.display = 'block';
+    } catch(e) {
+      document.getElementById('replay-output').textContent = 'Error: ' + e.message;
+      document.getElementById('replay-result').style.display = 'block';
+    }
+
+    btn.textContent = "Try Replay Attack →";
+    btn.disabled = false;
+  }
+</script>
 <footer>
   <p>AION Protocol — Built by Sourabh Ranjan Sahoo</p>
   <div class="footer-links">
