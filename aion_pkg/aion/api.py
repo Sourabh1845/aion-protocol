@@ -16,6 +16,7 @@ from aion.redis_lock import acquire_redis_lock as acquire_lock, release_redis_lo
 from aion.token_signing import sign_token, verify_token_signature
 import uuid
 import logging
+import re
 from datetime import datetime, timezone, timedelta
 
 logger = logging.getLogger(__name__)
@@ -32,6 +33,9 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 TTL_SECONDS = 300
+SCOPE_REGEX = re.compile(r'^[a-zA-Z0-9._\-]+$')
+MAX_SCOPE_LENGTH = 100
+MAX_ISSUER_LENGTH = 100
 
 class IssueRequest(BaseModel):
     scope: str
@@ -41,12 +45,32 @@ class EnforceRequest(BaseModel):
     jti: str
     scope: str
 
+def validate_scope(scope: str):
+    if not scope or len(scope.strip()) == 0:
+        return {"error": "INVALID_SCOPE", "detail": "Scope cannot be empty"}
+    if len(scope) > MAX_SCOPE_LENGTH:
+        return {"error": "INVALID_SCOPE", "detail": f"Scope too long — max {MAX_SCOPE_LENGTH} characters"}
+    if not SCOPE_REGEX.match(scope):
+        return {"error": "INVALID_SCOPE", "detail": "Scope contains invalid characters — only alphanumeric, dots, dashes, underscores allowed"}
+    return None
+
+def validate_issuer(issuer: str):
+    if len(issuer) > MAX_ISSUER_LENGTH:
+        return {"error": "INVALID_ISSUER", "detail": f"Issuer too long — max {MAX_ISSUER_LENGTH} characters"}
+    return None
+
 @app.post("/issue")
 @limiter.limit("30/minute")
 def issue_authority(request: Request, req: IssueRequest, api_key: str = Depends(verify_api_key)):
     try:
-        if not req.scope:
-            return {"error": "INVALID_SCOPE"}
+        scope_error = validate_scope(req.scope)
+        if scope_error:
+            return scope_error
+
+        issuer_error = validate_issuer(req.issuer)
+        if issuer_error:
+            return issuer_error
+
         now = datetime.now(timezone.utc)
         auth = {
             "jti": str(uuid.uuid4()),
