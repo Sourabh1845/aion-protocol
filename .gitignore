@@ -19,3 +19,37 @@ audit_log.json
 .DS_Store
 Thumbs.db
 .env 
+
+# Local secrets
+.env
+*.pem
+*.key
+*_private*
+*_secret*
+
+# AION local runtime/generated files
+aion_pkg/storage/*.db
+aion_pkg/storage/*.json
+storage/*.db
+storage/*.json
+audit_log.json
+authority_store.json
+authority.json
+ratelimit_test.txt
+
+# Local snapshots/debug dumps
+AION_FILES.txt
+AION_SNAPSHOT.txt
+AION_CODE_REVIEW.txt
+AION_SMALL_STRUCTURE.txt
+AION_SOURCE_SAMPLE.txt
+structure.txt
+dump.txt
+
+# Local backup folders
+_local_private/
+_local_generated/
+# AION local receipts
+.aion/
+# AION local policy config
+aion-policy.json
