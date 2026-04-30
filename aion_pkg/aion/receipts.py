@@ -59,16 +59,21 @@ def create_receipt(
     receipt["receipt_hash"] = _hash_payload(receipt)
     return receipt
 
-
 def save_receipt(receipt):
     RECEIPT_DIR.mkdir(parents=True, exist_ok=True)
     path = RECEIPT_DIR / f"{receipt['receipt_id']}.json"
+    tmp_path = RECEIPT_DIR / f"{receipt['receipt_id']}.json.tmp"
 
     with _LOCK:
-        with path.open("w", encoding="utf-8") as f:
+        with tmp_path.open("w", encoding="utf-8") as f:
             json.dump(receipt, f, indent=2, sort_keys=True, default=str)
+            f.flush()
+            os.fsync(f.fileno())
+
+        tmp_path.replace(path)
 
     return str(path)
+
 
 
 def record_receipt(
@@ -92,7 +97,7 @@ def record_receipt(
     )
 
     if async_write:
-        thread = threading.Thread(target=save_receipt, args=(receipt,), daemon=True)
+        thread = threading.Thread(target=save_receipt, args=(receipt,), daemon=False)
         thread.start()
     else:
         save_receipt(receipt)

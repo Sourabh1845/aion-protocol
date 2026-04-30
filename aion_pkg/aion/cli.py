@@ -43,9 +43,21 @@ def _receipts(limit=10):
         return
 
     receipts = []
+    skipped = 0
+
     for file_path in files:
-        with open(file_path, "r", encoding="utf-8") as f:
-            receipts.append(json.load(f))
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                receipts.append(json.load(f))
+        except (OSError, json.JSONDecodeError):
+            skipped += 1
+
+    if skipped:
+        print(f"Skipped {skipped} unreadable receipt file(s)")
+
+    if not receipts:
+        print("No readable AION receipts found")
+        return
 
     receipts.sort(key=lambda item: item.get("timestamp", ""), reverse=True)
 
@@ -58,7 +70,6 @@ def _receipts(limit=10):
             f"{receipt.get('scope')} | "
             f"{receipt.get('receipt_id')}"
         )
-
 
 
 def _guard_demo():
