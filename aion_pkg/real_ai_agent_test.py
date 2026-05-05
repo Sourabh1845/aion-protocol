@@ -1,6 +1,6 @@
 from langchain_ollama import ChatOllama
 from langchain_core.tools import tool
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 from aion.authority import issue
 from aion.enforce import enforce
 
@@ -32,7 +32,7 @@ def write_file(filename: str, content: str) -> str:
 
 tools = [request_and_enforce_authority, read_file, write_file]
 
-agent = create_react_agent(llm, tools)
+agent = create_agent(model=llm, tools=tools)
 
 print("\n--- Test: Agent reads a file with AION governance ---\n")
 
