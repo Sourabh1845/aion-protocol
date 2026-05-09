@@ -7,6 +7,7 @@ from aion.authority import issue, revoke, verify
 from aion.enforce import enforce
 from aion.policy import DEFAULT_POLICY
 from aion.receipts import RECEIPT_DIR
+from aion.scan import print_report, report_to_json, scan_path
 
 
 def _print_usage():
@@ -20,6 +21,7 @@ def _print_usage():
     print("  policy-init")
     print("  receipts [limit]")
     print("  guard-demo")
+    print("  scan [path] [--json]")
 
 
 def _policy_init():
@@ -142,6 +144,16 @@ def main():
 
     elif cmd == "guard-demo":
         _guard_demo()
+    elif cmd == "scan":
+        target = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] != "--json" else "."
+        json_output = "--json" in sys.argv
+        report = scan_path(target)
+
+        if json_output:
+            print(report_to_json(report))
+        else:
+                    print_report(report, limit=10)
+
 
     else:
         print(f"Unknown command: {cmd}")
