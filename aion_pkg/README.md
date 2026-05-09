@@ -1,23 +1,34 @@
 # AION Protocol
 
-AION is a fast security and authority layer for AI agents.
+AION is a security layer for AI agents.
 
-It helps developers control what autonomous agents are allowed to do before they touch files, APIs, terminals, emails, payments, deployments, or other real-world tools.
+It helps developers scan risky agent tools, block unsafe actions, and create proof of what happened.
 
-## Core Idea
+## Quickstart
 
-Safe actions should pass instantly.
+Run these commands:
 
-Risky actions should be logged, approved, or blocked.
+aion scan .
+aion guard-demo
+aion receipts 10
 
-```text
-Agent wants to act
-        |
-        v
-AION checks policy
-        |
-        v
-allow / log / approval / block
-        |
-        v
-AION creates receipt proof
+## AION Scan
+
+AION Scan detects risky patterns such as shell commands, file deletion, secret access, API calls, database writes, and MCP config references.
+
+## AION Guard
+
+Use guard to protect a tool or function before it runs.
+
+## AION Receipts
+
+AION creates proof for important agent actions.
+
+## Status
+
+Stage 1 AION Guard: Complete
+Stage 2 AION Receipts: Complete
+Stage 3 AION Scan: Complete
+Stage 4 Docs + Demo: In progress
+
+Built by Sourabh Ranjan Sahoo.
