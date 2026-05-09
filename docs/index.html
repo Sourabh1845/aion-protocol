@@ -328,8 +328,8 @@
           call APIs, touch databases, use MCP tools, or modify real systems.
         </p>
         <div class="actions">
-          <a class="btn btn-primary" href="https://github.com/Sourabh1845/aion-protocol" target="_blank" rel="noreferrer">View GitHub</a>
-          <a class="btn btn-secondary" href="#demo">See Demo</a>
+          <a class="btn btn-primary" href="https://pypi.org/project/aion-protocol/" target="_blank" rel="noreferrer">Install from PyPI</a>
+          <a class="btn btn-secondary" href="#demo">See Demo</a><a class="btn btn-secondary" href="https://github.com/Sourabh1845/aion-protocol" target="_blank" rel="noreferrer">GitHub</a>
         </div>
       </div>
 
@@ -337,7 +337,8 @@
         <div class="terminal-head">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
         </div>
-        <pre><code>$ aion scan .
+        <pre><code>$ pip install aion-protocol
+$ aion scan .
 <span class="red">HIGH</span> shell command execution found
 <span class="red">HIGH</span> file deletion capability found
 <span class="yellow">MEDIUM</span> MCP config reference found
@@ -376,12 +377,20 @@ proof created for every action</code></pre>
 
     <section id="demo">
       <div class="section-inner">
-        <h2>Five-minute demo</h2>
-        <p class="section-sub">These commands show what AION does today in the local package.</p>
+        <h2>Install and test in five minutes</h2>
+        <p class="section-sub">Install AION, scan a project, run the guard demo, and inspect receipts.</p>
 
         <div class="steps">
           <div class="step">
             <strong>Step 1</strong>
+            <div>
+              <b>Install package</b>
+              <pre><code>pip install aion-protocol</code></pre>
+            </div>
+          </div>
+
+          <div class="step">
+            <strong>Step 2</strong>
             <div>
               <b>Scan a project</b>
               <pre><code>aion scan .</code></pre>
@@ -389,7 +398,7 @@ proof created for every action</code></pre>
           </div>
 
           <div class="step">
-            <strong>Step 2</strong>
+            <strong>Step 3</strong>
             <div>
               <b>Run the guard demo</b>
               <pre><code>aion guard-demo</code></pre>
@@ -397,7 +406,7 @@ proof created for every action</code></pre>
           </div>
 
           <div class="step">
-            <strong>Step 3</strong>
+            <strong>Step 4</strong>
             <div>
               <b>View receipts</b>
               <pre><code>aion receipts 10</code></pre>
@@ -406,11 +415,10 @@ proof created for every action</code></pre>
         </div>
       </div>
     </section>
-
     <section>
       <div class="section-inner">
-        <h2>Designed for speed</h2>
-        <p class="section-sub">AION should not slow every agent action. It only adds friction where risk is high.</p>
+        <h2>Proof from the current build</h2>
+        <p class="section-sub">AION Guard allowed low-risk file.read in about 0.1ms. Focused Guard + Scan tests pass locally.</p>
 
         <table class="table">
           <thead>
@@ -446,3 +454,7 @@ proof created for every action</code></pre>
   </footer>
 </body>
 </html>
+
+
+
+
