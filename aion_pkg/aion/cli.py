@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 from aion.authority import issue, revoke, verify
+from aion.cloud import upload_latest_receipt
 from aion.enforce import enforce
 from aion.policy import DEFAULT_POLICY
 from aion.receipts import RECEIPT_DIR
@@ -22,6 +23,7 @@ def _print_usage():
     print("  receipts [limit]")
     print("  guard-demo")
     print("  scan [path] [--json]")
+    print("  cloud-sync")
 
 
 def _policy_init():
@@ -144,6 +146,7 @@ def main():
 
     elif cmd == "guard-demo":
         _guard_demo()
+
     elif cmd == "scan":
         target = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] != "--json" else "."
         json_output = "--json" in sys.argv
@@ -152,8 +155,11 @@ def main():
         if json_output:
             print(report_to_json(report))
         else:
-                    print_report(report, limit=10)
+            print_report(report, limit=10)
 
+    elif cmd == "cloud-sync":
+        result = upload_latest_receipt()
+        print(json.dumps(result, indent=2))
 
     else:
         print(f"Unknown command: {cmd}")
