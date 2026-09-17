@@ -3,13 +3,30 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "aion-protocol"
-version = "2.1.0"
+name = "aion-core"
+version = "2.1.1"
 description = "The trust layer for AI agents — identity, limits, and court-ready proof for every agent action"
 authors = [{name = "Sourabh Ranjan"}]
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["cryptography>=41.0"]
+keywords = ["ai-agents", "agent-security", "x402", "payments", "mandates", "audit", "trust-layer", "guardrails"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://sourabh1845.github.io/aion-protocol/"
+Repository = "https://github.com/Sourabh1845/aion-protocol"
+Issues = "https://github.com/Sourabh1845/aion-protocol/issues"
+Documentation = "https://github.com/Sourabh1845/aion-protocol#readme"
 
 [project.optional-dependencies]
 cloud = ["fastapi>=0.100", "uvicorn", "slowapi", "psycopg2-binary", "redis"]

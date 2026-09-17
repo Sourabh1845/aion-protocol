@@ -60,3 +60,6 @@ aion_pkg/build/
 live_result.txt
 test_result.txt
 dispute-bundle-*.json
+
+# egg-info (all)
+aion_pkg/aion_core.egg-info/

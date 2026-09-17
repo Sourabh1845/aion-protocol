@@ -32,7 +32,7 @@ limiter = Limiter(key_func=get_remote_address)
 
 app = FastAPI(
     title="AION Protocol",
-    version="3.0.0",
+    version="2.1.1",
     description="Immutable Authority Infrastructure for Autonomous AI Agents"
 )
 
@@ -178,11 +178,35 @@ def revoke_authority(request: Request, jti: str, api_key: str = Depends(verify_a
     except Exception as e:
         return {"error": "REVOKE_FAILED", "detail": str(e)}
 
+@app.get("/")
+def index():
+    """Service index — visitors ko API ka map dikhata hai (404 ke bajaye)."""
+    return {
+        "service": "AION — the trust layer for AI agents",
+        "version": "2.1.1",
+        "description": (
+            "Signed spending mandates, one-time payment authorizations, "
+            "tamper-evident receipts, and court-ready dispute bundles."
+        ),
+        "docs": "/docs",
+        "endpoints": {
+            "GET  /health": "service + database + redis status",
+            "POST /issue": "issue a signed, one-time authority token",
+            "POST /enforce": "consume a token (replay-protected)",
+            "GET  /verify/{jti}": "read-only verification",
+            "POST /revoke/{jti}": "revoke an authority (kill switch)",
+        },
+        "install": "pip install aion-core",
+        "homepage": "https://sourabh1845.github.io/aion-protocol/",
+        "repository": "https://github.com/Sourabh1845/aion-protocol",
+    }
+
+
 @app.get("/health")
 def health():
     return {
         "status": "AION is running",
-        "version": "3.0.0",
+        "version": "2.1.1",
         "database": db_status(),
         "redis": "connected" if REDIS_AVAILABLE else "fallback-local-lock",
     }
