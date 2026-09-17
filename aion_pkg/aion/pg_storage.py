@@ -7,26 +7,53 @@ from contextlib import contextmanager
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if DATABASE_URL:
-    connection_pool = pool.ThreadedConnectionPool(
-        minconn=2,
-        maxconn=10,
-        dsn=DATABASE_URL
-    )
-else:
-    connection_pool = pool.ThreadedConnectionPool(
-        minconn=5,
-        maxconn=20,
-        host=os.environ.get("DB_HOST", "localhost"),
-        port=5432,
-        database="aion_db",
-        user="postgres",
-        password=os.environ.get("DB_PASSWORD", "SRS")
-    )
+connection_pool = None
+_last_error = None
+
+
+def _build_pool():
+    """Lazy pool — import pe connect NAHI. Pehli request pe, fail-safe."""
+    global connection_pool, _last_error
+    if connection_pool is not None:
+        return connection_pool
+    try:
+        if DATABASE_URL:
+            connection_pool = pool.ThreadedConnectionPool(
+                minconn=1,
+                maxconn=10,
+                dsn=DATABASE_URL
+            )
+        else:
+            connection_pool = pool.ThreadedConnectionPool(
+                minconn=1,
+                maxconn=5,
+                host=os.environ.get("DB_HOST", "localhost"),
+                port=5432,
+                database="aion_db",
+                user="postgres",
+                password=os.environ.get("DB_PASSWORD", "SRS")
+            )
+        print("PostgreSQL connection pool created")
+    except Exception as e:
+        _last_error = str(e)
+        print(f"PostgreSQL pool unavailable (degraded mode): {e}")
+        return None
+    return connection_pool
+
+
+def db_status():
+    """Health endpoint ke liye — DB up hai ya nahi, bina crash ke."""
+    if connection_pool is not None:
+        return "connected"
+    return f"unavailable: {_last_error or 'not initialized yet'}"
+
 
 @contextmanager
 def get_conn():
-    conn = connection_pool.getconn()
+    pool_ = _build_pool()
+    if pool_ is None:
+        raise RuntimeError(f"DATABASE_UNAVAILABLE: {_last_error}")
+    conn = pool_.getconn()
     try:
         yield conn
         conn.commit()
@@ -34,7 +61,7 @@ def get_conn():
         conn.rollback()
         raise
     finally:
-        connection_pool.putconn(conn)
+        pool_.putconn(conn)
 
 def init_pg_db():
     with get_conn() as conn:
@@ -117,5 +144,3 @@ def pg_revoke_authority(jti):
         cur.execute(
             "UPDATE authorities SET revoked=TRUE WHERE jti=%s", (jti,)
         )
-
-init_pg_db()

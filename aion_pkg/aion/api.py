@@ -10,10 +10,16 @@ from aion.pg_storage import (
     pg_get_authority,
     pg_insert_authority,
     pg_mark_consumed,
-    pg_revoke_authority
+    pg_revoke_authority,
+    init_pg_db,
+    db_status
 )
 from aion.audit import log
-from aion.redis_lock import acquire_redis_lock as acquire_lock, release_redis_lock as release_lock
+from aion.redis_lock import (
+    acquire_redis_lock as acquire_lock,
+    release_redis_lock as release_lock,
+    REDIS_AVAILABLE
+)
 from aion.token_signing import sign_token, verify_token_signature
 import uuid
 import logging
@@ -174,4 +180,18 @@ def revoke_authority(request: Request, jti: str, api_key: str = Depends(verify_a
 
 @app.get("/health")
 def health():
-    return {"status": "AION is running", "version": "3.0.0"}
+    return {
+        "status": "AION is running",
+        "version": "3.0.0",
+        "database": db_status(),
+        "redis": "connected" if REDIS_AVAILABLE else "fallback-local-lock",
+    }
+
+
+@app.on_event("startup")
+def startup_init():
+    """DB init startup pe — fail hone pe bhi service boot hoti hai (degraded mode)."""
+    try:
+        init_pg_db()
+    except Exception as e:
+        logger.error(f"DB init failed — degraded mode active: {e}")

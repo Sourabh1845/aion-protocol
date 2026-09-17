@@ -5,11 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "aion-protocol"
 version = "2.1.0"
-description = "Immutable Authority Infrastructure for Autonomous AI Agents"
+description = "The trust layer for AI agents — identity, limits, and court-ready proof for every agent action"
 authors = [{name = "Sourabh Ranjan"}]
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = ["cryptography>=41.0"]
+
+[project.optional-dependencies]
+cloud = ["fastapi>=0.100", "uvicorn", "slowapi", "psycopg2-binary", "redis"]
 
 [project.scripts]
 aion = "aion.cli:main"
