@@ -1,91 +1,122 @@
 Metadata-Version: 2.4
 Name: aion-protocol
-Version: 2.0.0
-Summary: Immutable Authority Infrastructure for Autonomous AI Agents
+Version: 2.1.0
+Summary: The trust layer for AI agents — identity, limits, and court-ready proof for every agent action
 Author: Sourabh Ranjan
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
+Requires-Dist: cryptography>=41.0
+Provides-Extra: cloud
+Requires-Dist: fastapi>=0.100; extra == "cloud"
+Requires-Dist: uvicorn; extra == "cloud"
+Requires-Dist: slowapi; extra == "cloud"
+Requires-Dist: psycopg2-binary; extra == "cloud"
+Requires-Dist: redis; extra == "cloud"
 
 # AION Protocol
 
-Immutable Authority Infrastructure for Autonomous AI Agents.
+**The trust layer for AI agents — identity, limits, and court-ready proof for every agent action.**
 
-Before any AI agent can act in the world — it must be authorized.
-AION issues, enforces, and immutably logs that authority.
+AI agents don't just chat anymore — they spend money, run code, delete files, and call other agents.
+What they're missing is a bank-grade control layer. AION gives every agent:
 
----
+- 🪪 **Identity** — a signed Intent Mandate (budget + payee allowlist + expiry) the agent cannot exceed
+- 🚦 **Limits** — one-time, amount-and-payee-bound payment authorizations (replay-proof)
+- 🧾 **Proof** — tamper-evident, hash-chained receipts for every action
+- ⚖️ **Disputes** — exportable, third-party-verifiable evidence bundles
 
-## The Problem
-
-AI agents are acting without permission systems.
-They send emails, execute code, move data — with no cryptographic proof of who authorized them.
-This is the core unsolved problem of the Autonomous AI Agent era.
-
----
-
-## What AION Does
-
-1. **Issue** — a signed authority token is created with scope + expiry
-2. **Enforce** — agent must present token before acting
-3. **Audit** — every action is immutably logged with hash chaining
-
-No token = no action. Simple.
-
----
-
-## Install
-
-pip install aion-protocol
-
----
+AION doesn't move money — rails like [x402](https://www.x402.org) do.
+AION decides **whether a payment is allowed, and proves what happened.**
 
 ## Quickstart
 
-Issue a token:
-aion issue ops.read
+```bash
+pip install aion-protocol
+```
 
-Enforce it:
-aion enforce <jti> ops.read
+**1. Scan** — find risky patterns in your agent's code:
 
-Revoke it:
-aion revoke <jti>
+```bash
+aion scan .
+```
 
----
+**2. Guard** — allow, block, or require approval for actions:
 
-## REST API
+```bash
+aion guard-demo
+```
 
-Start the server:
-uvicorn aion.api:app --reload
+**3. Payments** — give your agent a spending mandate and let it pay safely:
 
-Endpoints:
-POST /issue
-POST /enforce
-GET  /verify/{jti}
-POST /revoke/{jti}
-GET  /health
+```bash
+# Create a signed mandate: agent:shopbot can spend max 500/payment, 1000 total, only these payees
+aion mandate-create agent:shopbot 500 1000 "api:weather,api:news"
 
-API docs: http://127.0.0.1:8000/docs
+# Agent requests a one-time payment auth (bound to exact amount + payee)
+aion pay <mandate_id> 300 api:weather
 
----
+# Settle it with the on-chain/off-chain reference
+aion settle <jti> x402:tx_0xabc123
 
-## What AION Prevents
+# Verify as a third party / export court-ready dispute evidence
+aion pay-verify <jti>
+aion dispute <mandate_id> --save
+```
 
-- Agents acting without permission
-- Replay attacks — consumed tokens are blocked
-- Scope escalation — ops.read cannot enforce ops.write
-- Silent actions — every action is logged
+Attack table (all enforced, all tested):
 
----
+| Attack | AION response |
+|---|---|
+| Replay a settled payment | `ALREADY_SETTLED` |
+| Spend over per-payment limit | `AMOUNT_LIMIT` |
+| Spend over total budget (race-safe) | `BUDGET_EXHAUSTED` |
+| Pay an unapproved payee | `PAYEE_NOT_ALLOWED` |
+| Tamper with stored payment terms | `INVALID_SIGNATURE` |
+| Tamper with the receipt chain | `chain_intact: false` |
+| Rogue sub-agent | `AGENT_MISMATCH` |
 
-## Built For
+## Why not just trust the model?
 
-The Autonomous AI Agent era.
-When millions of agents act in the world — authority infrastructure is not optional.
+A modern model writes clean code — that was never the problem.
+The problem is **authority**: an agent that can act on the real world needs
+the same thing humans got from banks: card limits, one-time OTPs, receipts,
+and chargebacks. AION is that layer. It doesn't depend on the agent's
+goodwill — only on signatures and state the agent cannot touch.
 
----
+## Receipts
+
+Every allowed/blocked/approved action gets a tamper-evident receipt
+(sha256-chained, secrets auto-redacted):
+
+```bash
+aion receipts 10
+```
+
+## Optional: hosted verification API
+
+Local mandates and receipts are free and offline. For third-party
+verification, revocation, and cross-company agent trust, run the API server:
+
+```bash
+pip install "aion-protocol[cloud]"
+uvicorn aion.api:app
+```
+
+Endpoints: `/issue`, `/enforce`, `/verify/{jti}`, `/revoke/{jti}`, `/health`.
+The server boots in degraded mode if the database is down and reports it in `/health`.
 
 ## Status
 
-v2.0 — SQLite storage, REST API, 3 tests passing.
+- Scan: ✅ | Guard: ✅ | Authority (one-time tokens + delegation): ✅
+- Receipts + audit chain: ✅
+- Payment Trust Rails (mandate → bound auth → settlement → dispute bundle): ✅
+- x402 adapter: 🔜 | Hosted verification network: 🔜
 
-GitHub: https://github.com/Sourabh1845/aion-protocol
+## Links
+
+- Landing page: https://sourabh1845.github.io/aion-protocol
+- GitHub: https://github.com/Sourabh1845/aion-protocol
+- Live API: https://aion-protocol.onrender.com
+
+Built by Sourabh Ranjan Sahoo.
+

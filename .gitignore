@@ -54,3 +54,8 @@ _local_generated/
 # AION local policy config
 aion-policy.json
 aion_pkg/dist/
+
+# local test artifacts
+live_result.txt
+test_result.txt
+dispute-bundle-*.json

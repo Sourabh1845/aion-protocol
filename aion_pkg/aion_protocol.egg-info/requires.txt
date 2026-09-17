@@ -1,0 +1,8 @@
+cryptography>=41.0
+
+[cloud]
+fastapi>=0.100
+uvicorn
+slowapi
+psycopg2-binary
+redis
