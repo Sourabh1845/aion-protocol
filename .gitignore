@@ -53,3 +53,4 @@ _local_generated/
 .aion/
 # AION local policy config
 aion-policy.json
+aion_pkg/dist/
