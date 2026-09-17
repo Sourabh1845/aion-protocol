@@ -24,6 +24,13 @@ def _print_usage():
     print("  guard-demo")
     print("  scan [path] [--json]")
     print("  cloud-sync")
+    print("  mandate-create <agent> <max_per_payment> <max_total> [payees comma-sep]")
+    print("  mandate-revoke <mandate_id>")
+    print("  pay <mandate_id> <amount> <payee>")
+    print("  settle <jti> <settlement_ref>")
+    print("  pay-verify <jti>")
+    print("  pay-chain <mandate_id>")
+    print("  dispute <mandate_id> [--save]")
 
 
 def _policy_init():
@@ -111,6 +118,92 @@ def _guard_demo():
         print(f"Approval required correctly: {exc}")
 
 
+def _mandate_create(agent, max_per_payment, max_total, payees_arg=None):
+    from aion.payments import create_intent_mandate
+
+    payees = [p for p in (payees_arg or "").split(",") if p]
+    mandate = create_intent_mandate(
+        principal="cli-user",
+        agent=agent,
+        max_per_payment=max_per_payment,
+        max_total=max_total,
+        payees=payees,
+    )
+    if "error" in mandate:
+        print(json.dumps(mandate, indent=2))
+        return
+    print(f"Intent mandate issued for {agent}")
+    print(f"mandate_id: {mandate['mandate_id']}")
+    print(
+        f"budget: {mandate['max_per_payment']}/payment, "
+        f"{mandate['max_total']} total {mandate['currency']}"
+    )
+    if mandate["payees"]:
+        print(f"payee allowlist: {', '.join(mandate['payees'])}")
+    print("Rules are RSA-signed. Share mandate_id with the agent only.")
+
+
+def _pay(mandate_id, amount, payee):
+    from aion.payment_storage import get_mandate
+    from aion.payments import authorize_payment
+
+    mandate = get_mandate(mandate_id)
+    if not mandate:
+        print(json.dumps({"error": "MANDATE_NOT_FOUND"}, indent=2))
+        return
+    result = authorize_payment(mandate_id, mandate["agent"], amount, payee)
+    if "error" in result:
+        print(json.dumps(result, indent=2))
+        return
+    print(f"Payment authorized (one-time, bound to {amount} -> {payee})")
+    print(f"jti: {result['jti']}")
+    print(f"expires_at: {result['expires_at']}")
+    print("Settle with: aion settle <jti> <settlement_ref>")
+
+
+def _settle(jti, settlement_ref):
+    from aion.payments import settle_payment
+
+    print(json.dumps(settle_payment(jti, settlement_ref), indent=2))
+
+
+def _pay_verify(jti):
+    from aion.payments import verify_payment_auth
+
+    print(json.dumps(verify_payment_auth(jti), indent=2))
+
+
+def _pay_chain(mandate_id):
+    from aion.payments import verify_payment_chain
+
+    ok = verify_payment_chain(mandate_id)
+    print(json.dumps({"mandate_id": mandate_id, "chain_intact": ok}, indent=2))
+
+
+def _dispute(mandate_id, save=False):
+    from aion.payments import export_dispute_bundle
+
+    bundle = export_dispute_bundle(mandate_id)
+    if "error" in bundle:
+        print(json.dumps(bundle, indent=2))
+        return
+    if save:
+        path = Path(f"dispute-bundle-{mandate_id}.json")
+        path.write_text(
+            json.dumps(bundle, indent=2, sort_keys=True, default=str),
+            encoding="utf-8",
+        )
+        print(f"Dispute bundle saved: {path}")
+        print(f"bundle_hash: {bundle['bundle_hash']}")
+        print(f"chain_intact: {bundle['chain_intact']}")
+        print(
+            f"total_settled: {bundle['total_settled']} / "
+            f"total_authorized: {bundle['total_authorized']}"
+        )
+        return
+    print(json.dumps(bundle, indent=2, default=str))
+
+
 def main():
     if len(sys.argv) < 2:
         _print_usage()
@@ -160,6 +253,42 @@ def main():
     elif cmd == "cloud-sync":
         result = upload_latest_receipt()
         print(json.dumps(result, indent=2))
+
+    elif cmd == "mandate-create":
+        if len(sys.argv) < 5:
+            print("Usage: aion mandate-create <agent> <max_per_payment> <max_total> [payees comma-sep]")
+            return
+        _mandate_create(
+            sys.argv[2],
+            int(sys.argv[3]),
+            int(sys.argv[4]),
+            sys.argv[5] if len(sys.argv) > 5 else None,
+        )
+
+    elif cmd == "mandate-revoke":
+        from aion.payments import revoke_mandate
+        print(json.dumps(revoke_mandate(sys.argv[2]), indent=2))
+
+    elif cmd == "pay":
+        if len(sys.argv) < 5:
+            print("Usage: aion pay <mandate_id> <amount> <payee>")
+            return
+        _pay(sys.argv[2], int(sys.argv[3]), sys.argv[4])
+
+    elif cmd == "settle":
+        if len(sys.argv) < 4:
+            print("Usage: aion settle <jti> <settlement_ref>")
+            return
+        _settle(sys.argv[2], sys.argv[3])
+
+    elif cmd == "pay-verify":
+        _pay_verify(sys.argv[2])
+
+    elif cmd == "pay-chain":
+        _pay_chain(sys.argv[2])
+
+    elif cmd == "dispute":
+        _dispute(sys.argv[2], save="--save" in sys.argv)
 
     else:
         print(f"Unknown command: {cmd}")
