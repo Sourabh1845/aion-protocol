@@ -16,8 +16,12 @@ AION decides **whether a payment is allowed, and proves what happened.**
 ## Quickstart
 
 ```bash
-pip install aion-protocol
+pip install aion-core
 ```
+
+> **Package name note:** AION ships as **`aion-core`** on PyPI (v2.1.0+).
+> The older `aion-protocol` package (v2.0.0) predates the Payment Trust Rails
+> and x402 adapter — use `aion-core` for the full trust layer.
 
 **1. Scan** — find risky patterns in your agent's code:
 
@@ -103,7 +107,7 @@ Local mandates and receipts are free and offline. For third-party
 verification, revocation, and cross-company agent trust, run the API server:
 
 ```bash
-pip install "aion-protocol[cloud]"
+pip install "aion-core[cloud]"
 uvicorn aion.api:app
 ```
 
