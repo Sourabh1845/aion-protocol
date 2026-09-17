@@ -1,0 +1,16 @@
+{
+  "x402Version": 1,
+  "accepts": [
+    {
+      "scheme": "exact",
+      "network": "base-sepolia",
+      "asset": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+      "amount": "90000",
+      "payTo": "api:weather",
+      "resource": "https://api.weather.example/premium-annual",
+      "description": "Annual premium - attacker inflated price",
+      "maxTimeoutSeconds": 60,
+      "extra": { "name": "USDC", "version": "2", "decimals": 6 }
+    }
+  ]
+}

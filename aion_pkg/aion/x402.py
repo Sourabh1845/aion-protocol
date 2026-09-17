@@ -427,6 +427,8 @@ def check_x402_against_mandate(mandate_id, requirements, aion_jti):
             "resource": terms["resource"],
         },
     }
+
+
 # ---- INTEGRATION POINT 3: SETTLEMENT ----
 
 def settle_x402(aion_jti, payment_response):

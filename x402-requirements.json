@@ -1,0 +1,20 @@
+{
+  "x402Version": 1,
+  "accepts": [
+    {
+      "scheme": "exact",
+      "network": "base-sepolia",
+      "asset": "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
+      "amount": "3000",
+      "payTo": "api:weather",
+      "resource": "https://api.weather.example/forecast",
+      "description": "Premium 7-day forecast",
+      "maxTimeoutSeconds": 60,
+      "extra": {
+        "name": "USDC",
+        "version": "2",
+        "decimals": 6
+      }
+    }
+  ]
+}

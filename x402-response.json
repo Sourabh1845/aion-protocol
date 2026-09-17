@@ -1,0 +1,7 @@
+{
+  "success": true,
+  "transaction": "0xabc123def4567890",
+  "network": "base-sepolia",
+  "payer": "0xAgentWallet0001",
+  "x402Version": 1
+}

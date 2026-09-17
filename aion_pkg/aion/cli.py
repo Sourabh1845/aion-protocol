@@ -31,6 +31,9 @@ def _print_usage():
     print("  pay-verify <jti>")
     print("  pay-chain <mandate_id>")
     print("  dispute <mandate_id> [--save]")
+    print("  x402-pay <mandate_id> <requirements_json|@file> [--agent X] [--amount N]")
+    print("  x402-check <mandate_id> <requirements_json|@file> <jti>")
+    print("  x402-settle <jti> <payment_response_json|@file>")
 
 
 def _policy_init():
@@ -204,6 +207,61 @@ def _dispute(mandate_id, save=False):
     print(json.dumps(bundle, indent=2, default=str))
 
 
+def _load_json_arg(value):
+    """Accepts inline JSON or @path/to/file.json."""
+    if value.startswith("@"):
+        return json.loads(Path(value[1:]).read_text(encoding="utf-8"))
+    return json.loads(value)
+
+
+def _x402_pay(mandate_id, requirements_arg, agent=None, amount=None):
+    from aion.x402 import authorize_x402
+
+    requirements = _load_json_arg(requirements_arg)
+    result = authorize_x402(
+        mandate_id,
+        requirements,
+        agent=agent,
+        amount=amount,
+    )
+    if result.get("decision") != "allow":
+        print(f"BLOCKED: {result.get('reason')}")
+        print(json.dumps(result, indent=2, default=str))
+        return
+    print(f"x402 payment authorized (one-time, bound to mandate {mandate_id})")
+    print(f"aion_jti: {result['aion_jti']}")
+    print(f"amount: {result['amount']} {result['currency']} -> {result['payee']}")
+    print(f"scheme: {result['x402']['scheme']}  network: {result['x402']['network']}")
+    print("Attach aion_jti to the x402 PAYMENT-SIGNATURE payload envelope.")
+    print(json.dumps(result, indent=2, default=str))
+
+
+def _x402_check(mandate_id, requirements_arg, jti):
+    from aion.x402 import check_x402_against_mandate
+
+    requirements = _load_json_arg(requirements_arg)
+    result = check_x402_against_mandate(mandate_id, requirements, jti)
+    if result.get("decision") == "allow":
+        print(f"ALLOW: {result['amount']} {result['currency']} -> {result['payee']}")
+        print(f"payment_status: {result['payment_status']}")
+    else:
+        print(f"BLOCKED: {result.get('reason')}")
+    print(json.dumps(result, indent=2, default=str))
+
+
+def _x402_settle(jti, payment_response_arg):
+    from aion.x402 import settle_x402
+
+    payment_response = _load_json_arg(payment_response_arg)
+    result = settle_x402(jti, payment_response)
+    if result.get("decision") == "settled":
+        print(f"x402 settlement bound to receipt chain: {result['settlement_ref']}")
+        print(f"receipt_hash: {result.get('receipt_hash')}")
+    else:
+        print(f"BLOCKED: {result.get('reason')}")
+    print(json.dumps(result, indent=2, default=str))
+
+
 def main():
     if len(sys.argv) < 2:
         _print_usage()
@@ -289,6 +347,30 @@ def main():
 
     elif cmd == "dispute":
         _dispute(sys.argv[2], save="--save" in sys.argv)
+
+    elif cmd == "x402-pay":
+        if len(sys.argv) < 4:
+            print("Usage: aion x402-pay <mandate_id> <requirements_json|@file> [--agent X] [--amount N]")
+            return
+        agent = None
+        amount = None
+        if "--agent" in sys.argv:
+            agent = sys.argv[sys.argv.index("--agent") + 1]
+        if "--amount" in sys.argv:
+            amount = int(sys.argv[sys.argv.index("--amount") + 1])
+        _x402_pay(sys.argv[2], sys.argv[3], agent=agent, amount=amount)
+
+    elif cmd == "x402-check":
+        if len(sys.argv) < 5:
+            print("Usage: aion x402-check <mandate_id> <requirements_json|@file> <jti>")
+            return
+        _x402_check(sys.argv[2], sys.argv[3], sys.argv[4])
+
+    elif cmd == "x402-settle":
+        if len(sys.argv) < 4:
+            print("Usage: aion x402-settle <jti> <payment_response_json|@file>")
+            return
+        _x402_settle(sys.argv[2], sys.argv[3])
 
     else:
         print(f"Unknown command: {cmd}")
