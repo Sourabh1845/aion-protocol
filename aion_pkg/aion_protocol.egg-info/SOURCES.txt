@@ -25,6 +25,7 @@ aion/scan.py
 aion/storage.py
 aion/store.py
 aion/token_signing.py
+aion/x402.py
 aion_protocol.egg-info/PKG-INFO
 aion_protocol.egg-info/SOURCES.txt
 aion_protocol.egg-info/dependency_links.txt
@@ -40,3 +41,4 @@ tests/test_payments.py
 tests/test_replay.py
 tests/test_scan.py
 tests/test_scope.py
+tests/test_x402.py

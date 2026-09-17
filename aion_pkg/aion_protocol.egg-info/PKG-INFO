@@ -75,6 +75,26 @@ Attack table (all enforced, all tested):
 | Tamper with the receipt chain | `chain_intact: false` |
 | Rogue sub-agent | `AGENT_MISMATCH` |
 
+**4. x402 adapter** — enforce the human's intent on real [x402](https://www.x402.org) payments:
+
+```bash
+# Seller asks for 0.003 USDC on base-sepolia (x402 PAYMENT-REQUIRED body)
+# Agent pre-flights it: does the signed mandate allow this exact payment?
+aion x402-pay <mandate_id> @x402-requirements.json
+
+# Seller-side: is this agent's payment actually allowed? (called inside /verify)
+aion x402-check <mandate_id> @x402-requirements.json <jti>
+
+# Bind the on-chain settlement hash into the receipt chain
+aion x402-settle <jti> @x402-response.json
+```
+
+x402's own spec says funds **"must only move in accordance with client intentions"** —
+but the protocol has no way to sign, bind, or prove those intentions. AION adds that
+missing layer: a signed mandate the agent cannot exceed, one-time authorizations bound
+to exact amount + payee, and settlement hashes chained into verifiable receipts.
+Overcharge, rogue payee, double-spend, and prompt-injected terms are all blocked.
+
 ## Why not just trust the model?
 
 A modern model writes clean code — that was never the problem.
@@ -110,7 +130,8 @@ The server boots in degraded mode if the database is down and reports it in `/he
 - Scan: ✅ | Guard: ✅ | Authority (one-time tokens + delegation): ✅
 - Receipts + audit chain: ✅
 - Payment Trust Rails (mandate → bound auth → settlement → dispute bundle): ✅
-- x402 adapter: 🔜 | Hosted verification network: 🔜
+- x402 adapter (client pre-flight, seller-side verify, settlement binding): ✅
+- Hosted verification network: 🟡 live at https://aion-protocol.onrender.com
 
 ## Links
 
