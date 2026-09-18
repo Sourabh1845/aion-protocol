@@ -32,7 +32,7 @@ limiter = Limiter(key_func=get_remote_address)
 
 app = FastAPI(
     title="AION Protocol",
-    version="2.1.1",
+    version="2.1.2",
     description="Immutable Authority Infrastructure for Autonomous AI Agents"
 )
 
@@ -63,14 +63,14 @@ def validate_scope(scope: str):
     if not scope or len(scope.strip()) == 0:
         return {"error": "INVALID_SCOPE", "detail": "Scope cannot be empty"}
     if len(scope) > MAX_SCOPE_LENGTH:
-        return {"error": "INVALID_SCOPE", "detail": f"Scope too long — max {MAX_SCOPE_LENGTH} characters"}
+        return {"error": "INVALID_SCOPE", "detail": f"Scope too long â€” max {MAX_SCOPE_LENGTH} characters"}
     if not SCOPE_REGEX.match(scope):
-        return {"error": "INVALID_SCOPE", "detail": "Scope contains invalid characters — only alphanumeric, dots, dashes, underscores allowed"}
+        return {"error": "INVALID_SCOPE", "detail": "Scope contains invalid characters â€” only alphanumeric, dots, dashes, underscores allowed"}
     return None
 
 def validate_issuer(issuer: str):
     if len(issuer) > MAX_ISSUER_LENGTH:
-        return {"error": "INVALID_ISSUER", "detail": f"Issuer too long — max {MAX_ISSUER_LENGTH} characters"}
+        return {"error": "INVALID_ISSUER", "detail": f"Issuer too long â€” max {MAX_ISSUER_LENGTH} characters"}
     return None
 
 @app.post("/issue")
@@ -180,10 +180,10 @@ def revoke_authority(request: Request, jti: str, api_key: str = Depends(verify_a
 
 @app.get("/")
 def index():
-    """Service index — visitors ko API ka map dikhata hai (404 ke bajaye)."""
+    """Service index â€” visitors ko API ka map dikhata hai (404 ke bajaye)."""
     return {
-        "service": "AION — the trust layer for AI agents",
-        "version": "2.1.1",
+        "service": "AION â€” the trust layer for AI agents",
+        "version": "2.1.2",
         "description": (
             "Signed spending mandates, one-time payment authorizations, "
             "tamper-evident receipts, and court-ready dispute bundles."
@@ -206,7 +206,7 @@ def index():
 def health():
     return {
         "status": "AION is running",
-        "version": "2.1.1",
+        "version": "2.1.2",
         "database": db_status(),
         "redis": "connected" if REDIS_AVAILABLE else "fallback-local-lock",
     }
@@ -214,8 +214,8 @@ def health():
 
 @app.on_event("startup")
 def startup_init():
-    """DB init startup pe — fail hone pe bhi service boot hoti hai (degraded mode)."""
+    """DB init startup pe â€” fail hone pe bhi service boot hoti hai (degraded mode)."""
     try:
         init_pg_db()
     except Exception as e:
-        logger.error(f"DB init failed — degraded mode active: {e}")
+        logger.error(f"DB init failed â€” degraded mode active: {e}")
