@@ -34,6 +34,9 @@ def _print_usage():
     print("  x402-pay <mandate_id> <requirements_json|@file> [--agent X] [--amount N]")
     print("  x402-check <mandate_id> <requirements_json|@file> <jti>")
     print("  x402-settle <jti> <payment_response_json|@file>")
+    print("  anchor <mandate_id>")
+    print("  anchor-verify <mandate_id>")
+    print("  anchors")
 
 
 def _policy_init():
@@ -371,6 +374,34 @@ def main():
             print("Usage: aion x402-settle <jti> <payment_response_json|@file>")
             return
         _x402_settle(sys.argv[2], sys.argv[3])
+
+    elif cmd == "anchor":
+        if len(sys.argv) < 3:
+            print("Usage: aion anchor <mandate_id>")
+            return
+        from aion.anchoring import publish_root
+        print(json.dumps(publish_root(sys.argv[2]), indent=2))
+
+    elif cmd == "anchor-verify":
+        if len(sys.argv) < 3:
+            print("Usage: aion anchor-verify <mandate_id>")
+            return
+        from aion.anchoring import verify_against_published_root
+        print(json.dumps(verify_against_published_root(sys.argv[2]), indent=2))
+
+    elif cmd == "anchors":
+        from aion.anchoring import list_anchors
+        anchors = list_anchors()
+        if not anchors:
+            print("No anchors published yet")
+            return
+        for record in anchors:
+            print(
+                f"{record.get('anchored_at')} | "
+                f"{record.get('mandate_id')[:13]} | "
+                f"len={record.get('length')} | "
+                f"root={str(record.get('root'))[:16]}..."
+            )
 
     else:
         print(f"Unknown command: {cmd}")
