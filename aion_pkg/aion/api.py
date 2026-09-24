@@ -32,7 +32,7 @@ limiter = Limiter(key_func=get_remote_address)
 
 app = FastAPI(
     title="AION Protocol",
-    version="2.3.2",
+    version="2.3.3",
     description="Immutable Authority Infrastructure for Autonomous AI Agents"
 )
 
@@ -183,7 +183,7 @@ def index():
     """Service index  - visitors ko API ka map dikhata hai (404 ke bajaye)."""
     return {
         "service": "AION  - the trust layer for AI agents",
-        "version": "2.3.2",
+        "version": "2.3.3",
         "description": (
             "Signed spending mandates, one-time payment authorizations, "
             "tamper-evident receipts, and court-ready dispute bundles."
@@ -206,7 +206,7 @@ def index():
 def health():
     return {
         "status": "AION is running",
-        "version": "2.3.2",
+        "version": "2.3.3",
         "database": db_status(),
         "redis": "connected" if REDIS_AVAILABLE else "fallback-local-lock",
     }

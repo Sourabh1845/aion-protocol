@@ -15,7 +15,7 @@ from aion.x402 import (
     x402_terms,
 )
 
-DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
+from aion.paths import db_file
 
 # Base mainnet USDC - the asset x402 puts in PaymentRequirements.asset
 USDC = "0x833589fCD6eDb6E08f4c7C32D4f71b54BdA2913"
@@ -23,7 +23,7 @@ PAYEE = "merchant:api.example.com"
 
 
 def _db():
-    return sqlite3.connect(str(DB_FILE))
+    return sqlite3.connect(str(db_file()))
 
 
 def _mandate(payees=None, **overrides):

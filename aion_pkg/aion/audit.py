@@ -2,9 +2,8 @@ import json
 import hashlib
 import sqlite3
 from datetime import datetime, timezone
-from pathlib import Path
 
-DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
+from aion.paths import db_file as _db_file
 
 # Self-healing schema: fresh installs (pip install into a new env) reach the
 # payments flow without ever importing aion.storage, whose _sync_init() owns
@@ -27,8 +26,9 @@ def _hash_record(record):
 
 def log(event_type, payload):
     try:
-        DB_FILE.parent.mkdir(parents=True, exist_ok=True)
-        conn = sqlite3.connect(str(DB_FILE))
+        path = _db_file()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        conn = sqlite3.connect(str(path))
         conn.execute(AUDIT_SCHEMA)
         cursor = conn.execute(
             "SELECT hash FROM audit_log ORDER BY id DESC LIMIT 1"

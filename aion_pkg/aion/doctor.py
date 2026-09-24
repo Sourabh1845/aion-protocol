@@ -42,16 +42,20 @@ def run_doctor():
         private_key, _ = load_keys()
         key_size = getattr(private_key, "key_size", "?")
         _check("RSA keypair loaded", True, f"{key_size}-bit")
-        import aion.token_signing as ts
+        from aion.paths import key_dir, key_file
 
-        from pathlib import Path
-
-        key_file = Path(ts.PRIVATE_KEY_FILE)
-        if key_file.exists():
+        private_key_path = key_file()
+        print(f"  [INFO] key dir: {key_dir()}   (override with AION_HOME)")
+        if private_key_path.exists():
+            if "site-packages" in str(private_key_path) or "dist-packages" in str(private_key_path):
+                print(
+                    "  [WARN] that path is inside site-packages - a reinstall would "
+                    "destroy your signing identity."
+                )
             print(
                 "  [WARN] private key is NOT backed up - copy it somewhere safe."
             )
-            print(f"         ({key_file})")
+            print(f"         ({private_key_path})")
             CHECKS.append(("key backup warning", True, "advisory"))
     except Exception as exc:
         _check("RSA keypair", False, str(exc))

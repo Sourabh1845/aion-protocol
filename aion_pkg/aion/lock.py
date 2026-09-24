@@ -1,11 +1,13 @@
 import sqlite3
 import time
-from pathlib import Path
 
-DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
+from aion.paths import db_file as _db_file
+
 
 def _get_conn():
-    return sqlite3.connect(str(DB_FILE))
+    path = _db_file()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return sqlite3.connect(str(path))
 
 def init_lock_table():
     conn = _get_conn()

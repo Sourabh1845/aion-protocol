@@ -11,12 +11,11 @@ from aion.payments import (
     verify_payment_chain,
 )
 from aion.payment_storage import get_payment_auth
-
-DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
+from aion.paths import db_file
 
 
 def _db():
-    return sqlite3.connect(str(DB_FILE))
+    return sqlite3.connect(str(db_file()))
 
 
 def _mandate(**overrides):

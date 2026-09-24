@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aion-core"
-version = "2.3.2"
+version = "2.3.3"
 description = "The trust layer for AI agents - identity, limits, and court-ready proof for every agent action"
 authors = [{name = "Sourabh Ranjan"}]
 readme = "README.md"

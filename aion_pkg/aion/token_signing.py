@@ -6,16 +6,22 @@ from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.backends import default_backend
 from pathlib import Path
 
-# Render pe Secret Files /etc/secrets/ mein hoti hain
-# Local development ke liye storage/ folder fallback hai
-SECRETS_DIR = Path("/etc/secrets")
-LOCAL_DIR = Path(__file__).parent.parent / "storage"
+from aion.paths import key_file
 
-PRIVATE_KEY_FILE = SECRETS_DIR / "aion_private_key.pem" if (SECRETS_DIR / "aion_private_key.pem").exists() else LOCAL_DIR / "aion_private_key.pem"
-PUBLIC_KEY_FILE = SECRETS_DIR / "aion_public_key.pem" if (SECRETS_DIR / "aion_public_key.pem").exists() else LOCAL_DIR / "aion_public_key.pem"
+# Hosted deployments keep the key in /etc/secrets (Render secret files, a
+# read-only mount). Everywhere else it resolves through aion.paths, which
+# defaults to ~/.aion/keys and migrates keys written by <= 2.3.2.
+SECRETS_DIR = Path("/etc/secrets")
+
+
+def _key_path(name):
+    mounted = SECRETS_DIR / name
+    if mounted.exists():
+        return mounted
+    return key_file(name)
+
 
 def generate_keys():
-    LOCAL_DIR.mkdir(exist_ok=True)
     private_key = rsa.generate_private_key(
         public_exponent=65537,
         key_size=2048,
@@ -30,25 +36,28 @@ def generate_keys():
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
-    (LOCAL_DIR / "aion_private_key.pem").write_bytes(private_pem)
-    (LOCAL_DIR / "aion_public_key.pem").write_bytes(public_pem)
-    print("RSA keys generated successfully")
+    private_path = _key_path("aion_private_key.pem")
+    public_path = _key_path("aion_public_key.pem")
+    private_path.parent.mkdir(parents=True, exist_ok=True)
+    private_path.write_bytes(private_pem)
+    public_path.write_bytes(public_pem)
     return private_key, private_key.public_key()
 
+
 def load_keys():
-    if not PRIVATE_KEY_FILE.exists():
-        print("Keys not found - generating new keys locally")
+    private_path = _key_path("aion_private_key.pem")
+    public_path = _key_path("aion_public_key.pem")
+    if not private_path.exists():
         return generate_keys()
     private_key = serialization.load_pem_private_key(
-        PRIVATE_KEY_FILE.read_bytes(),
+        private_path.read_bytes(),
         password=None,
         backend=default_backend()
     )
     public_key = serialization.load_pem_public_key(
-        PUBLIC_KEY_FILE.read_bytes(),
+        public_path.read_bytes(),
         backend=default_backend()
     )
-    print(f"Keys loaded from: {PRIVATE_KEY_FILE}")
     return private_key, public_key
 
 def sign_token(auth: dict) -> str:

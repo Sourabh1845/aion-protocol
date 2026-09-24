@@ -24,9 +24,12 @@ Please do not open a public issue for an unpatched vulnerability.
 3. **The local dev key is opt-in.** `aion-dev-key-local` is public knowledge
    (it is in this repo), so it is only accepted when a developer starts the
    server with `AION_ALLOW_DEV_KEY=1`. It is never used as an implicit fallback.
-4. **Signing keys never leave your machine.** Mandate/token signing keys live in
-   `.aion/` (git-ignored) or wherever you point `AION_KEY_DIR`. Receipts and
-   dispute bundles contain public keys and hashes, never private material.
+4. **Signing keys never live in the package.** Mandate/token signing keys are
+   read from `/etc/secrets` (hosted) or `~/.aion/keys` (default), overridable with
+   `AION_HOME` / `AION_KEY_DIR`. Keys written by <= 2.3.2 next to the installed
+   package are migrated on first use, because a reinstall would otherwise destroy
+   a user's signing identity. Receipts and dispute bundles contain public keys and
+   hashes, never private material.
 5. **Receipts redact secrets.** Metadata is passed through a redactor before
    hashing (only a hash of a redacted value is ever stored).
 6. **Rotate on exposure.** If a key is ever committed, rotate it at the source

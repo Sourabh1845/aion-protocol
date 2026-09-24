@@ -117,6 +117,16 @@ the same thing humans got from banks: card limits, one-time OTPs, receipts,
 and chargebacks. AION is that layer. It doesn't depend on the agent's
 goodwill — only on signatures and state the agent cannot touch.
 
+## Where AION keeps its keys and data
+
+Your signing identity lives in `~/.aion/` (keys in `~/.aion/keys`, local store in
+`~/.aion/aion.db`) - **not** inside site-packages, so `pip install --upgrade`
+never destroys it. Override with `AION_HOME`, `AION_KEY_DIR`, or `AION_DB_PATH`.
+Installs from 2.3.2 or earlier are migrated automatically on first use.
+
+Back up `~/.aion/keys/aion_private_key.pem`: it is the identity that signs your
+mandates and receipts.
+
 ## Receipts
 
 Every allowed/blocked/approved action gets a tamper-evident receipt

@@ -1,14 +1,15 @@
 import aiosqlite
 import json
-from pathlib import Path
 from datetime import datetime, timezone
 import sqlite3
 
-DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
+from aion.paths import db_file as _db_file
+
 
 def _init():
-    DB_FILE.parent.mkdir(exist_ok=True)
-    conn = sqlite3.connect(str(DB_FILE))
+    path = _db_file()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(path))
     conn.execute("""
         CREATE TABLE IF NOT EXISTS authorities (
             jti TEXT PRIMARY KEY,
@@ -28,7 +29,7 @@ def _init():
 _init()
 
 async def async_get_authority(jti):
-    async with aiosqlite.connect(str(DB_FILE)) as db:
+    async with aiosqlite.connect(str(_db_file())) as db:
         async with db.execute(
             "SELECT * FROM authorities WHERE jti=?", (jti,)
         ) as cursor:
@@ -43,7 +44,7 @@ async def async_get_authority(jti):
     }
 
 async def async_insert_authority(auth):
-    async with aiosqlite.connect(str(DB_FILE)) as db:
+    async with aiosqlite.connect(str(_db_file())) as db:
         await db.execute("""
             INSERT OR REPLACE INTO authorities 
             VALUES (?,?,?,?,?,?,?,?,?)
@@ -56,14 +57,14 @@ async def async_insert_authority(auth):
         await db.commit()
 
 async def async_mark_consumed(jti):
-    async with aiosqlite.connect(str(DB_FILE)) as db:
+    async with aiosqlite.connect(str(_db_file())) as db:
         await db.execute(
             "UPDATE authorities SET consumed=1 WHERE jti=?", (jti,)
         )
         await db.commit()
 
 async def async_revoke_authority(jti):
-    async with aiosqlite.connect(str(DB_FILE)) as db:
+    async with aiosqlite.connect(str(_db_file())) as db:
         await db.execute(
             "UPDATE authorities SET revoked=1 WHERE jti=?", (jti,)
         )

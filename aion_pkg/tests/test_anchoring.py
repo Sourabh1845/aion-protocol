@@ -8,13 +8,12 @@ from aion.anchoring import (
     publish_root,
     verify_against_published_root,
 )
+from aion.paths import db_file
 from aion.payments import authorize_payment, create_intent_mandate
-
-DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
 
 
 def _db():
-    return sqlite3.connect(str(DB_FILE))
+    return sqlite3.connect(str(db_file()))
 
 
 def _mandate_with_payment(amount=300, payee="api:weather"):

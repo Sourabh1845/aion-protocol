@@ -1,12 +1,13 @@
 import sqlite3
-from pathlib import Path
 from datetime import datetime
 
-DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
+from aion.paths import db_file as _db_file
+
 
 def get_conn():
-    DB_FILE.parent.mkdir(exist_ok=True)
-    return sqlite3.connect(DB_FILE)
+    path = _db_file()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return sqlite3.connect(str(path))
 
 def init_db():
     conn = get_conn()
@@ -83,13 +84,10 @@ def revoke_authority(jti):
     conn.commit()
     conn.close()
 
-import sqlite3
-from pathlib import Path
-
 def _sync_init():
-    db_file = Path(__file__).parent.parent / "storage" / "aion.db"
-    db_file.parent.mkdir(exist_ok=True)
-    conn = sqlite3.connect(str(db_file))
+    path = _db_file()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(path))
     conn.execute("""
         CREATE TABLE IF NOT EXISTS authorities (
             jti TEXT PRIMARY KEY,

@@ -1,19 +1,19 @@
 import sqlite3
 import json
-from pathlib import Path
 
-DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
+from aion.paths import db_file as _db_file
 
 
 def get_conn():
-    DB_FILE.parent.mkdir(exist_ok=True)
-    return sqlite3.connect(str(DB_FILE), timeout=30)
+    path = _db_file()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return sqlite3.connect(str(path), timeout=30)
 
 
 def _init_payments():
-    db_file = DB_FILE
-    db_file.parent.mkdir(exist_ok=True)
-    conn = sqlite3.connect(str(db_file))
+    path = _db_file()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(str(path))
     conn.execute("""
         CREATE TABLE IF NOT EXISTS mandates (
             mandate_id TEXT PRIMARY KEY,
