@@ -96,16 +96,17 @@ def run_doctor():
     for module, label in (("langchain_core", "LangChain"), ("crewai", "CrewAI")):
         try:
             __import__(module)
-            _check(f"{label} integration", True)
+            _check(f"{label} integration", True, "installed")
         except ImportError:
-            _check(f"{label} integration", False, "optional — pip install to enable")
+            CHECKS.append((f"{label} integration (optional)", True, "not installed - pip install to enable"))
+            print(f"  [OPTIONAL] {label} not installed - enable with: pip install {module}")
 
     _summary()
-    return {"ok": all(p for _, p, _ in CHECKS if "optional" not in _ and "backup" not in _), "checks": CHECKS}
+    return {"ok": all(p for _, p, _ in CHECKS), "checks": CHECKS}
 
 
 def _summary():
-    failed = [name for name, passed, _ in CHECKS if not passed and "optional" not in name]
+    failed = [name for name, passed, _ in CHECKS if not passed]
     print(f"\n{'=' * 62}")
     if not failed:
         print("HEALTHY - AION is ready. Start with:  aion demo")
