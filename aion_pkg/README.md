@@ -19,7 +19,13 @@ AION decides **whether a payment is allowed, and proves what happened.**
 
 ```bash
 pip install aion-core
+aion doctor        # verify your install (5 seconds)
+aion demo          # see the whole trust layer in 60 seconds
 ```
+
+**Wire it into your agent:** [INTEGRATION.md](../INTEGRATION.md) — LangChain, CrewAI,
+MCP, or plain Python. Runnable starters: `aion example quickstart` (and
+`langchain_agent`, `crewai_agent`).
 
 > **Package name note:** AION ships as **`aion-core`** on PyPI (v2.1+).
 > The older `aion-protocol` package (v2.0.0) predates the Payment Trust Rails

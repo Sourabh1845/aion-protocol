@@ -37,6 +37,9 @@ def _print_usage():
     print("  anchor <mandate_id>")
     print("  anchor-verify <mandate_id>")
     print("  anchors")
+    print("  demo                    # 60-second end-to-end story")
+    print("  doctor                  # verify your install")
+    print("  example <name>          # quickstart | langchain_agent | crewai_agent")
 
 
 def _policy_init():
@@ -402,6 +405,21 @@ def main():
                 f"len={record.get('length')} | "
                 f"root={str(record.get('root'))[:16]}..."
             )
+
+    elif cmd == "demo":
+        from aion.demo import run_demo
+        run_demo()
+
+    elif cmd == "doctor":
+        from aion.doctor import run_doctor
+        run_doctor()
+
+    elif cmd == "example":
+        if len(sys.argv) < 3:
+            print("Usage: aion example <name>   (quickstart | langchain_agent | crewai_agent)")
+            return
+        from aion.examples import run_example
+        run_example(sys.argv[2])
 
     else:
         print(f"Unknown command: {cmd}")
