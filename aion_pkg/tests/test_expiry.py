@@ -15,7 +15,7 @@ def test_expiry():
     conn.commit()
     conn.close()
     
-    # Ab verify karo — expired hona chahiye
+    # Ab verify karo - expired hona chahiye
     result = verify(jti, "ops.read")
     assert result["error"] == "EXPIRED"
     

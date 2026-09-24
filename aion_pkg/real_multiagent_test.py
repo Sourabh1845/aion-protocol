@@ -71,7 +71,7 @@ class WorkerAgent:
         print(f"\n[{self.name}] Received task: {task}")
         
         if not self.auth:
-            print(f"[{self.name}] BLOCKED — No authority!")
+            print(f"[{self.name}] BLOCKED - No authority!")
             return
 
         print(f"[{self.name}] Enforcing authority with AION...")
@@ -79,7 +79,7 @@ class WorkerAgent:
 
         if result.get("status") == "ENFORCED":
             thought = self.think(f"I have been authorized to execute: {task}. How should I proceed?")
-            print(f"[{self.name}] ALLOWED — Thinking: {thought[:100]}...")
+            print(f"[{self.name}] ALLOWED - Thinking: {thought[:100]}...")
             print(f"[{self.name}] Task completed: {task}")
         else:
             print(f"[{self.name}] BLOCKED by AION: {result}")
@@ -102,7 +102,7 @@ print("\n--- Step 4: Replay attack test ---")
 print(f"\n[{worker.name}] Trying same token again...")
 result = enforce(worker.auth["jti"], "ops.read")
 if "error" in result:
-    print(f"[{worker.name}] BLOCKED by AION — Replay prevented: {result['reason']}")
+    print(f"[{worker.name}] BLOCKED by AION - Replay prevented: {result['reason']}")
 
 print("\n" + "=" * 60)
 print("MULTI-AGENT TEST COMPLETE")

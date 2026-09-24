@@ -1,6 +1,6 @@
 import pytest
 
-pytest.importorskip("langchain_core", reason="langchain not installed — integration test skipped")
+pytest.importorskip("langchain_core", reason="langchain not installed - integration test skipped")
 
 from aion.langchain_tool import aion_issue, aion_enforce, aion_revoke
 

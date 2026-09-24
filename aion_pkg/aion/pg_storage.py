@@ -12,7 +12,7 @@ _last_error = None
 
 
 def _build_pool():
-    """Lazy pool — import pe connect NAHI. Pehli request pe, fail-safe."""
+    """Lazy pool - import pe connect NAHI. Pehli request pe, fail-safe."""
     global connection_pool, _last_error
     if connection_pool is not None:
         return connection_pool
@@ -42,7 +42,7 @@ def _build_pool():
 
 
 def db_status():
-    """Health endpoint ke liye — DB up hai ya nahi, bina crash ke."""
+    """Health endpoint ke liye - DB up hai ya nahi, bina crash ke."""
     if connection_pool is not None:
         return "connected"
     return f"unavailable: {_last_error or 'not initialized yet'}"

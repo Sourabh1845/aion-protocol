@@ -1,6 +1,6 @@
 import pytest
 
-pytest.importorskip("crewai", reason="crewai not installed — integration test skipped")
+pytest.importorskip("crewai", reason="crewai not installed - integration test skipped")
 
 from aion.crewai_tool import AIONIssueTool, AIONEnforceTool, AIONRevokeTool
 

@@ -1,9 +1,9 @@
-"""AION Payment Rails — cryptographic trust layer for agent payments.
+"""AION Payment Rails - cryptographic trust layer for agent payments.
 
 Flow:
     1. Principal creates a signed Intent Mandate (budget + limits + payees)
     2. Agent requests a one-time Payment Auth bound to exact amount + payee
-    3. Payment settles — settlement evidence is attached to the auth
+    3. Payment settles - settlement evidence is attached to the auth
     4. Every auth is hash-chained; dispute bundles are third-party verifiable
 
 Attack table:
@@ -118,7 +118,7 @@ CHAIN_FIELDS = (
 
 
 def _auth_chain_hash(auth, prev_chain_hash):
-    # Chain covers only the immutable authorization terms — settlement
+    # Chain covers only the immutable authorization terms - settlement
     # fields (status/settlement_ref/settled_at) change later and must not
     # break verification of the chain itself.
     payload = {k: auth.get(k) for k in CHAIN_FIELDS}
@@ -402,7 +402,7 @@ def export_dispute_bundle(mandate_id):
     """Verifiable evidence bundle: mandate + all payment auths + chain proof.
 
     This is what an insurer, platform, or court can independently verify
-    without trusting the operator — signatures and chain hashes only.
+    without trusting the operator - signatures and chain hashes only.
     """
     mandate = get_mandate(mandate_id)
     if not mandate:

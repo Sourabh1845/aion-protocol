@@ -1,4 +1,4 @@
-"""AION examples — copy-paste runnable starters.
+"""AION examples - copy-paste runnable starters.
 
 Run via CLI:
     aion example quickstart

@@ -3,16 +3,16 @@ from aion.delegation import delegate
 from aion.enforce import enforce
 
 def test_3_level_chain():
-    # Root → Agent A
+    # Root -> Agent A
     agent_a = issue("ops.read", issuer="root.system")
     assert "jti" in agent_a
 
-    # Agent A → Agent B
+    # Agent A -> Agent B
     agent_b = delegate(agent_a["jti"], "ops.read", "agent.A")
     assert "jti" in agent_b
     assert agent_b["parent"] == agent_a["jti"]
 
-    # Agent B → Agent C
+    # Agent B -> Agent C
     agent_c = delegate(agent_b["jti"], "ops.read", "agent.B")
     assert "jti" in agent_c
     assert agent_c["parent"] == agent_b["jti"]

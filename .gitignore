@@ -63,3 +63,6 @@ dispute-bundle-*.json
 
 # egg-info (all)
 aion_pkg/aion_core.egg-info/
+
+# Editor settings
+.vscode/

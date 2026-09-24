@@ -7,7 +7,7 @@ approval + a tamper-evident receipt.
 
 
 def main():
-    # 1) The human sets hard limits (RSA-signed — the agent cannot exceed these)
+    # 1) The human sets hard limits (RSA-signed - the agent cannot exceed these)
     from aion.payments import create_intent_mandate
 
     mandate = create_intent_mandate(
@@ -15,7 +15,7 @@ def main():
         agent="agent:my-first-agent",
         max_per_payment=500,          # max per payment (smallest currency unit)
         max_total=1000,               # max total budget
-        payees=["api:weather"],       # allowlist — nothing else gets paid
+        payees=["api:weather"],       # allowlist - nothing else gets paid
     )
     assert "error" not in mandate, mandate
     print("mandate:", mandate["mandate_id"], "| signed:", bool(mandate["signature"]))
@@ -32,7 +32,7 @@ def main():
     assert "error" not in settled, settled
     print("settled | receipt:", settled["receipt_hash"][:24], "...")
 
-    # 4) Guard ANY dangerous action (not just payments) — decorator style
+    # 4) Guard ANY dangerous action (not just payments) - decorator style
     from aion.guard import guard
 
     @guard(scope="shell.run", agent="agent:my-first-agent",

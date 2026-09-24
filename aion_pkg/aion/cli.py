@@ -268,7 +268,22 @@ def _x402_settle(jti, payment_response_arg):
     print(json.dumps(result, indent=2, default=str))
 
 
+def _force_utf8_stdio():
+    """Windows consoles default to a legacy codepage (cp1252).
+
+    Force UTF-8 on the CLI's own streams so proof output never prints as
+    mojibake on a first run. Silently no-op on streams that cannot be
+    reconfigured (e.g. a captured/redirected buffer).
+    """
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError):
+            pass
+
+
 def main():
+    _force_utf8_stdio()
     if len(sys.argv) < 2:
         _print_usage()
         return

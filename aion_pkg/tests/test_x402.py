@@ -17,7 +17,7 @@ from aion.x402 import (
 
 DB_FILE = Path(__file__).parent.parent / "storage" / "aion.db"
 
-# Base mainnet USDC — the asset x402 puts in PaymentRequirements.asset
+# Base mainnet USDC - the asset x402 puts in PaymentRequirements.asset
 USDC = "0x833589fCD6eDb6E08f4c7C32D4f71b54BdA2913"
 PAYEE = "merchant:api.example.com"
 

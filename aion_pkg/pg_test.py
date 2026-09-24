@@ -11,7 +11,7 @@ print("=" * 60)
 print("AION PostgreSQL Storage Test")
 print("=" * 60)
 
-# Test 1 — Insert authority
+# Test 1 - Insert authority
 print("\nTest 1: Insert authority...")
 now = datetime.now(timezone.utc)
 auth = {
@@ -28,21 +28,21 @@ auth = {
 pg_insert_authority(auth)
 print(f"Inserted: {auth['jti']}")
 
-# Test 2 — Get authority
+# Test 2 - Get authority
 print("\nTest 2: Get authority...")
 fetched = pg_get_authority(auth["jti"])
 assert fetched is not None
 assert fetched["scope"] == "ops.read"
 print(f"Fetched: {fetched['jti']} scope={fetched['scope']}")
 
-# Test 3 — Mark consumed
+# Test 3 - Mark consumed
 print("\nTest 3: Mark consumed...")
 pg_mark_consumed(auth["jti"])
 fetched2 = pg_get_authority(auth["jti"])
 assert fetched2["consumed"] == True
 print(f"Consumed: {fetched2['consumed']}")
 
-# Test 4 — Revoke
+# Test 4 - Revoke
 print("\nTest 4: Revoke authority...")
 auth2 = {
     "jti": str(uuid.uuid4()),

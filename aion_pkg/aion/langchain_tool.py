@@ -23,7 +23,7 @@ def aion_issue(scope: str) -> dict:
 
 @tool
 def aion_enforce(jti: str, scope: str) -> dict:
-    """Enforce an AION authority token — agent must present valid token to act."""
+    """Enforce an AION authority token - agent must present valid token to act."""
     try:
         if not jti or not scope:
             return {"error": "INVALID_INPUT", "detail": "JTI and scope are required"}

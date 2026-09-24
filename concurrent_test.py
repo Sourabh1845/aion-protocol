@@ -1,18 +1,31 @@
-import requests
+import os
 import concurrent.futures
+
+import requests
+
+BASE_URL = os.getenv("AION_BASE_URL", "https://aion-protocol.onrender.com")
+API_KEY = os.getenv("AION_API_KEY")
+
+if not API_KEY:
+    raise SystemExit(
+        "AION_API_KEY is not set. Set it first, e.g.  set AION_API_KEY=<your-key>"
+    )
+
+HEADERS = {"X-AION-API-Key": API_KEY, "Content-Type": "application/json"}
+
 
 def issue_and_enforce(_):
     r = requests.post(
-        'https://aion-protocol.onrender.com/issue',
+        f'{BASE_URL}/issue',
         json={'scope': 'test.concurrent', 'issuer': 'agent'},
-        headers={'X-AION-API-Key': 'aion-prod-key-2026'}
+        headers=HEADERS
     )
     token = r.json()
     if 'jti' in token:
         e = requests.post(
-            'https://aion-protocol.onrender.com/enforce',
+            f'{BASE_URL}/enforce',
             json={'jti': token['jti'], 'scope': 'test.concurrent'},
-            headers={'X-AION-API-Key': 'aion-prod-key-2026'}
+            headers=HEADERS
         )
         return e.json().get('status', 'DENIED')
     return 'FAILED'

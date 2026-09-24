@@ -2,7 +2,7 @@
 
 Requires: pip install langchain-core
 
-The pattern is tiny — wrap your tool functions with @guard. Blocked or
+The pattern is tiny - wrap your tool functions with @guard. Blocked or
 approval-required actions raise before your tool ever runs, and every
 call leaves a tamper-evident receipt.
 """
@@ -36,7 +36,7 @@ def main():
     @guard(scope="shell.run", agent="agent:langchain-demo",
            metadata_factory=lambda command: {"command": command})
     def run_shell(command: str) -> str:
-        """Run a shell command (guarded by AION — rm -rf style patterns are blocked)."""
+        """Run a shell command (guarded by AION - rm -rf style patterns are blocked)."""
         return f"ran: {command}"
 
     try:

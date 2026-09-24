@@ -1,4 +1,4 @@
-"""`aion doctor` — install health check.
+"""`aion doctor` - install health check.
 
 Verifies in ~5 seconds that a fresh install is actually usable:
 Python version, cryptography backend, key material (with a backup
@@ -13,13 +13,13 @@ CHECKS = []
 def _check(name, passed, detail=""):
     CHECKS.append((name, bool(passed), detail))
     mark = "PASS" if passed else "FAIL"
-    suffix = f" — {detail}" if detail else ""
+    suffix = f" - {detail}" if detail else ""
     print(f"  [{mark}] {name}{suffix}")
     return bool(passed)
 
 
 def run_doctor():
-    print("\nAION DOCTOR — checking your install\n")
+    print("\nAION DOCTOR - checking your install\n")
 
     _check("Python >= 3.10", sys.version_info >= (3, 10), sys.version.split()[0])
 
@@ -49,7 +49,7 @@ def run_doctor():
         key_file = Path(ts.PRIVATE_KEY_FILE)
         if key_file.exists():
             print(
-                "  [WARN] private key is NOT backed up — copy it somewhere safe."
+                "  [WARN] private key is NOT backed up - copy it somewhere safe."
             )
             print(f"         ({key_file})")
             CHECKS.append(("key backup warning", True, "advisory"))

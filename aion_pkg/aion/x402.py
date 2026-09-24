@@ -1,9 +1,9 @@
-"""AION x402 adapter — mandate enforcement for x402 agent payments.
+"""AION x402 adapter - mandate enforcement for x402 agent payments.
 
 x402 (Linux Foundation) moves money: HTTP 402 -> PAYMENT-REQUIRED ->
 PAYMENT-SIGNATURE -> facilitator /verify -> /settle -> PAYMENT-RESPONSE.
 x402's own principles require that funds only move "in accordance with client
-intentions" — but the protocol has no way to express, sign, or prove those
+intentions" - but the protocol has no way to express, sign, or prove those
 intentions. That is the gap AION fills:
 
     PAYMENT-REQUIRED     <- what the seller asks for

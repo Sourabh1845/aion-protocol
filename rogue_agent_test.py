@@ -1,11 +1,18 @@
+import os
+
 import requests
 import time
 import json
 from datetime import datetime
 
-AION_BASE_URL = "https://aion-protocol.onrender.com"
-AION_API_KEY = "aion-prod-key-2026"
-FAKE_API_KEY = "hacker-fake-key-xyz"
+AION_BASE_URL = os.getenv("AION_BASE_URL", "https://aion-protocol.onrender.com")
+AION_API_KEY = os.getenv("AION_API_KEY")
+FAKE_API_KEY = "hacker-fake-key-xyz"  # deliberately invalid - exercises auth rejection
+
+if not AION_API_KEY:
+    raise SystemExit(
+        "AION_API_KEY is not set. Set it first, e.g.  set AION_API_KEY=<your-key>"
+    )
 
 headers_valid = {"X-AION-API-Key": AION_API_KEY, "Content-Type": "application/json"}
 headers_fake = {"X-AION-API-Key": FAKE_API_KEY, "Content-Type": "application/json"}
@@ -27,7 +34,7 @@ def log(test_name, expected, actual, passed):
 
 def run_tests():
     print("\n" + "="*65)
-    print("  AION PROTOCOL — ROGUE AGENT SECURITY TEST SUITE")
+    print("  AION PROTOCOL - ROGUE AGENT SECURITY TEST SUITE")
     print("  Simulating real-world adversarial agent behavior")
     print("="*65 + "\n")
 
@@ -36,28 +43,28 @@ def run_tests():
     # ─────────────────────────────────────────────
     print("── BLOCK 1: Authentication Attacks ──────────────────────────\n")
 
-    # Test 1.1 — No API key
+    # Test 1.1 - No API key
     r = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "read.data", "issuer": "rogue-agent"},
         headers={"Content-Type": "application/json"})
     passed = r.status_code == 401 or "error" in r.json() or "detail" in r.json()
     log("1.1 Issue token with NO API key",
-        "401 Unauthorized", f"HTTP {r.status_code} — {r.json()}", passed)
+        "401 Unauthorized", f"HTTP {r.status_code} - {r.json()}", passed)
 
-    # Test 1.2 — Fake API key
+    # Test 1.2 - Fake API key
     r = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "read.data", "issuer": "rogue-agent"},
         headers=headers_fake)
     passed = r.status_code == 401 or "error" in r.json() or "detail" in r.json()
     log("1.2 Issue token with FAKE API key",
-        "401 Unauthorized", f"HTTP {r.status_code} — {r.json()}", passed)
+        "401 Unauthorized", f"HTTP {r.status_code} - {r.json()}", passed)
 
     # ─────────────────────────────────────────────
     # BLOCK 2: Token Forgery Attacks
     # ─────────────────────────────────────────────
     print("── BLOCK 2: Token Forgery Attacks ───────────────────────────\n")
 
-    # Test 2.1 — Completely fake JTI
+    # Test 2.1 - Completely fake JTI
     r = requests.post(f"{AION_BASE_URL}/enforce",
         json={"jti": "00000000-0000-0000-0000-000000000000", "scope": "read.data"},
         headers=headers_valid)
@@ -65,7 +72,7 @@ def run_tests():
     log("2.1 Enforce with completely fake JTI",
         "NOT_FOUND or error", str(r.json()), passed)
 
-    # Test 2.2 — Tampered JTI (1 char changed)
+    # Test 2.2 - Tampered JTI (1 char changed)
     real_token = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "read.data", "issuer": "rogue-agent"},
         headers=headers_valid).json()
@@ -78,7 +85,7 @@ def run_tests():
     log("2.2 Enforce with TAMPERED JTI (1 char changed)",
         "NOT_FOUND or error", str(r.json()), passed)
 
-    # Test 2.3 — SQL injection in JTI
+    # Test 2.3 - SQL injection in JTI
     r = requests.post(f"{AION_BASE_URL}/enforce",
         json={"jti": "' OR '1'='1", "scope": "read.data"},
         headers=headers_valid)
@@ -91,7 +98,7 @@ def run_tests():
     # ─────────────────────────────────────────────
     print("── BLOCK 3: Scope Escalation Attacks ────────────────────────\n")
 
-    # Test 3.1 — Agent tries higher scope than issued
+    # Test 3.1 - Agent tries higher scope than issued
     token = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "read.data", "issuer": "rogue-agent"},
         headers=headers_valid).json()
@@ -102,7 +109,7 @@ def run_tests():
     log("3.1 Scope escalation: read.data token used for delete.database",
         "SCOPE_MISMATCH", str(r.json()), passed)
 
-    # Test 3.2 — Agent tries admin scope
+    # Test 3.2 - Agent tries admin scope
     token = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "read.files", "issuer": "rogue-agent"},
         headers=headers_valid).json()
@@ -118,7 +125,7 @@ def run_tests():
     # ─────────────────────────────────────────────
     print("── BLOCK 4: Replay Attacks ───────────────────────────────────\n")
 
-    # Test 4.1 — Same token used twice
+    # Test 4.1 - Same token used twice
     token = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "send.email", "issuer": "rogue-agent"},
         headers=headers_valid).json()
@@ -133,7 +140,7 @@ def run_tests():
     log("4.1 Replay attack: same token used twice",
         "1st=ENFORCED, 2nd=CONSUMED", f"1st={r1.json()} 2nd={r2.json()}", passed)
 
-    # Test 4.2 — 5 rapid replay attempts
+    # Test 4.2 - 5 rapid replay attempts
     token = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "write.file", "issuer": "rogue-agent"},
         headers=headers_valid).json()
@@ -154,7 +161,7 @@ def run_tests():
     # ─────────────────────────────────────────────
     print("── BLOCK 5: Revocation Attacks ───────────────────────────────\n")
 
-    # Test 5.1 — Use token after revocation
+    # Test 5.1 - Use token after revocation
     token = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "delete.file", "issuer": "rogue-agent"},
         headers=headers_valid).json()
@@ -172,7 +179,7 @@ def run_tests():
     # ─────────────────────────────────────────────
     print("── BLOCK 6: Edge Case Attacks ────────────────────────────────\n")
 
-    # Test 6.1 — Empty scope
+    # Test 6.1 - Empty scope
     r = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "", "issuer": "rogue-agent"},
         headers=headers_valid)
@@ -180,22 +187,22 @@ def run_tests():
     log("6.1 Issue token with EMPTY scope",
         "INVALID_SCOPE or error", str(r.json()), passed)
 
-    # Test 6.2 — Extremely long scope
+    # Test 6.2 - Extremely long scope
     long_scope = "a" * 10000
     r = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": long_scope, "issuer": "rogue-agent"},
         headers=headers_valid)
     passed = r.status_code in [400, 422] or "error" in r.json()
     log("6.2 Issue token with 10,000 character scope",
-        "error or 422", f"HTTP {r.status_code} — {str(r.json())[:100]}", passed)
+        "error or 422", f"HTTP {r.status_code} - {str(r.json())[:100]}", passed)
 
-    # Test 6.3 — Special characters in scope
+    # Test 6.3 - Special characters in scope
     r = requests.post(f"{AION_BASE_URL}/issue",
         json={"scope": "<script>alert('xss')</script>", "issuer": "rogue-agent"},
         headers=headers_valid)
     passed = "error" in r.json() or r.status_code in [400, 422]
     log("6.3 XSS attempt in scope field",
-        "error or blocked", f"HTTP {r.status_code} — {str(r.json())[:100]}", passed)
+        "error or blocked", f"HTTP {r.status_code} - {str(r.json())[:100]}", passed)
 
     # ─────────────────────────────────────────────
     # FINAL REPORT
@@ -215,11 +222,11 @@ def run_tests():
     if failed:
         print("\n  ── Failed Tests ──")
         for f in failed:
-            print(f"  ✗ {f['test']}")
+            print(f"  x {f['test']}")
             print(f"    Expected : {f['expected']}")
             print(f"    Got      : {f['actual']}")
     else:
-        print("\n  ✓ All tests passed — AION blocked every attack vector.")
+        print("\n  OK All tests passed - AION blocked every attack vector.")
 
     print("\n" + "="*65 + "\n")
 

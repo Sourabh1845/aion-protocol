@@ -24,7 +24,7 @@ class AIONIssueTool(BaseTool):
 
 class AIONEnforceTool(BaseTool):
     name: str = "AION Enforce Authority"
-    description: str = "Enforce AION token — agent must present valid token to act."
+    description: str = "Enforce AION token - agent must present valid token to act."
 
     def _run(self, jti: str, scope: str) -> dict:
         try:

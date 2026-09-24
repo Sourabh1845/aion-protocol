@@ -8,7 +8,7 @@ print("AION REAL WORLD AGENT TEST")
 print("=" * 60)
 
 # ============================================
-# SCENARIO 1: Single Agent — File Read Task
+# SCENARIO 1: Single Agent - File Read Task
 # ============================================
 print("\n--- SCENARIO 1: Single Agent File Read ---")
 
@@ -29,10 +29,10 @@ class FileReaderAgent:
         result = enforce(auth["jti"], "file.read")
         
         if result.get("status") == "ENFORCED":
-            print(f"[{self.name}] ALLOWED — Executing task: {task}")
+            print(f"[{self.name}] ALLOWED - Executing task: {task}")
             return f"Task completed: {task}"
         else:
-            print(f"[{self.name}] DENIED — Cannot execute: {result}")
+            print(f"[{self.name}] DENIED - Cannot execute: {result}")
             return None
 
 agent = FileReaderAgent("Agent-FileReader")
@@ -58,15 +58,15 @@ class RogueAgent:
         result = enforce(auth["jti"], "file.write")
         
         if result.get("status") == "ENFORCED":
-            print(f"[{self.name}] ALLOWED — This should not happen!")
+            print(f"[{self.name}] ALLOWED - This should not happen!")
         else:
-            print(f"[{self.name}] BLOCKED by AION — {result['reason']}")
+            print(f"[{self.name}] BLOCKED by AION - {result['reason']}")
 
 rogue = RogueAgent("Agent-Rogue")
 rogue.run("Write malicious_data.csv")
 
 # ============================================
-# SCENARIO 3: Multi-Agent — Manager delegates to Worker
+# SCENARIO 3: Multi-Agent - Manager delegates to Worker
 # ============================================
 print("\n--- SCENARIO 3: Multi-Agent Delegation ---")
 
@@ -100,9 +100,9 @@ class WorkerAgent:
         result = enforce(self.auth["jti"], "ops.read")
         
         if result.get("status") == "ENFORCED":
-            print(f"[{self.name}] ALLOWED — Executing: {task}")
+            print(f"[{self.name}] ALLOWED - Executing: {task}")
         else:
-            print(f"[{self.name}] DENIED — {result}")
+            print(f"[{self.name}] DENIED - {result}")
 
 manager = ManagerAgent("Manager-Agent")
 worker = WorkerAgent("Worker-Agent")
@@ -119,11 +119,11 @@ print("\n--- SCENARIO 4: Replay Attack Prevention ---")
 auth = issue("payment.execute", issuer="payment-agent")
 jti = auth["jti"]
 
-print(f"\nFirst use — should ALLOW:")
+print(f"\nFirst use - should ALLOW:")
 r1 = enforce(jti, "payment.execute")
 print(f"Result: {r1}")
 
-print(f"\nSecond use — should BLOCK:")
+print(f"\nSecond use - should BLOCK:")
 r2 = enforce(jti, "payment.execute")
 print(f"Result: {r2}")
 

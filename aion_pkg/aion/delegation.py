@@ -34,15 +34,15 @@ def delegate(parent_jti: str, new_scope: str, delegated_by: str):
         if datetime.fromisoformat(parent["expires_at"]) < datetime.now(timezone.utc):
             return {"error": "PARENT_EXPIRED"}
 
-        # Max depth check — count from parent
+        # Max depth check - count from parent
         depth = get_delegation_depth(parent_jti)
         if depth >= MAX_DELEGATION_DEPTH - 1:
-            return {"error": f"MAX_DEPTH_EXCEEDED — max {MAX_DELEGATION_DEPTH} levels allowed"}
+            return {"error": f"MAX_DEPTH_EXCEEDED - max {MAX_DELEGATION_DEPTH} levels allowed"}
 
         # Strict scope check
         parent_scope = parent["scope"]
         if new_scope != parent_scope and not new_scope.startswith(parent_scope + "."):
-            return {"error": f"SCOPE_VIOLATION — cannot delegate '{new_scope}' from '{parent_scope}'"}
+            return {"error": f"SCOPE_VIOLATION - cannot delegate '{new_scope}' from '{parent_scope}'"}
 
         now = datetime.now(timezone.utc)
         parent_expiry = datetime.fromisoformat(parent["expires_at"])

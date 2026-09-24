@@ -13,7 +13,7 @@ try:
     print("Redis connected successfully")
 except Exception as e:
     REDIS_AVAILABLE = False
-    print(f"Redis not available — using local lock fallback: {e}")
+    print(f"Redis not available - using local lock fallback: {e}")
 
 # Fallback in-memory lock
 _local_locks = set()

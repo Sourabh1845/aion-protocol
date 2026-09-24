@@ -105,7 +105,7 @@ def increment_mandate_spend(mandate_id, amount):
     """Atomic budget guard: increments only if within max_total and not revoked.
 
     Returns the fresh mandate row on success, None when the guard rejected it
-    (race-safe — the WHERE clause re-checks the budget inside the UPDATE).
+    (race-safe - the WHERE clause re-checks the budget inside the UPDATE).
     """
     conn = get_conn()
     cur = conn.execute("""

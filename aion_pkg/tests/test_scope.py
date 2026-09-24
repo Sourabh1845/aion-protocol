@@ -4,7 +4,7 @@ def test_scope_escalation():
     auth = issue("ops.read")
     jti = auth["jti"]
     
-    # ops.write maangna — block hona chahiye
+    # ops.write maangna - block hona chahiye
     result = verify(jti, "ops.write")
     assert result["error"] == "SCOPE_MISMATCH"
     

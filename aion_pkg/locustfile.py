@@ -1,11 +1,14 @@
 from locust import HttpUser, task, between
 import json
+import os
 
 class AIONUser(HttpUser):
     wait_time = between(0.1, 0.5)
     headers = {
         "Content-Type": "application/json",
-        "X-AION-API-Key": "aion-dev-key-local"
+        # Override with AION_API_KEY when pointing at a real server. The local
+        # dev key is only accepted by a server started with AION_ALLOW_DEV_KEY=1.
+        "X-AION-API-Key": os.getenv("AION_API_KEY", "aion-dev-key-local"),
     }
 
     @task(3)

@@ -138,6 +138,8 @@ uvicorn aion.api:app
 
 Endpoints: `/issue`, `/enforce`, `/verify/{jti}`, `/revoke/{jti}`, `/health`.
 The server boots in degraded mode if the database is down and reports it in `/health`.
+Auth fails closed: `AION_API_KEY` is required (`503` if unset), and the public
+dev key is only accepted when you start the server with `AION_ALLOW_DEV_KEY=1`.
 
 ## Status
 
@@ -155,6 +157,7 @@ The server boots in degraded mode if the database is down and reports it in `/he
 - GitHub: https://github.com/Sourabh1845/aion-protocol
 - Live API: https://aion-protocol.onrender.com
 - Threat model: [THREAT_MODEL.md](../THREAT_MODEL.md)
+- Security policy: [SECURITY.md](../SECURITY.md)
 - Compliance positioning: [docs/COMPLIANCE_PITCH.md](../docs/COMPLIANCE_PITCH.md)
 
 Built by Sourabh Ranjan Sahoo.

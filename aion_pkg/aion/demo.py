@@ -1,4 +1,4 @@
-"""`aion demo` — the 60-second AION story, end to end.
+"""`aion demo` - the 60-second AION story, end to end.
 
 One command that shows a buyer what the trust layer actually does:
 create a signed mandate, authorize a one-time payment, settle it, then
@@ -23,8 +23,8 @@ def _step(title):
 
 
 def run_demo():
-    print("\nAION DEMO — trust layer for AI agents, in 60 seconds")
-    print("(everything below runs on YOUR machine — no network, no cloud)")
+    print("\nAION DEMO - trust layer for AI agents, in 60 seconds")
+    print("(everything below runs on YOUR machine - no network, no cloud)")
 
     _step("1. The human signs a mandate (the agent's ONLY real power)")
     print('   "demo-bot may pay max 500 per payment, 1000 total,')
@@ -51,22 +51,22 @@ def run_demo():
     print(f"   one-time auth: {auth['jti']}")
     print("   bound to EXACT amount + payee, expires in 120s")
 
-    _step("3. Settlement — on-chain proof enters the receipt chain")
+    _step("3. Settlement - on-chain proof enters the receipt chain")
     result = settle_payment(auth["jti"], "x402:demo_tx_0xabc123")
     if "error" in result:
         print(f"   FAILED: {result}")
         return {"ok": False, "step": "settle"}
     print(f"   SETTLED | receipt: {result['receipt_hash'][:24]}...")
 
-    _step("4. ATTACK — seller replays the same settled auth (double-spend)")
+    _step("4. ATTACK - seller replays the same settled auth (double-spend)")
     replay = settle_payment(auth["jti"], "x402:demo_tx_attack")
     print(f"   AION: BLOCKED -> {replay['error']}")
 
-    _step("5. ATTACK — agent tries to overspend (900 > 500 per-payment cap)")
+    _step("5. ATTACK - agent tries to overspend (900 > 500 per-payment cap)")
     over = authorize_payment(mandate["mandate_id"], "agent:demo-bot", 900, "api:weather")
     print(f"   AION: BLOCKED -> {over['error']}")
 
-    _step("6. ATTACK — prompt-injected agent pays a rogue payee")
+    _step("6. ATTACK - prompt-injected agent pays a rogue payee")
     rogue = authorize_payment(mandate["mandate_id"], "agent:demo-bot", 100, "api:sketchy-shop")
     print(f"   AION: BLOCKED -> {rogue['error']}")
 
@@ -80,14 +80,14 @@ def run_demo():
     if verdict["status"] != "VERIFIED":
         return {"ok": False, "step": "anchor"}
 
-    _step("8. Dispute bundle — what you hand to a court/insurer/counterparty")
+    _step("8. Dispute bundle - what you hand to a court/insurer/counterparty")
     bundle = export_dispute_bundle(mandate["mandate_id"])
     print(f"   bundle: {bundle['bundle_type']} | chain_intact: {bundle['chain_intact']}")
     print(f"   authorized: {bundle['total_authorized']} | settled: {bundle['total_settled']}")
     print(f"   bundle_hash: {bundle['bundle_hash'][:32]}...")
 
     print(f"\n{'=' * 62}")
-    print("THE END — and only ~15 lines of your code were AION's.")
+    print("THE END - and only ~15 lines of your code were AION's.")
     print("\nYour turn:")
     print("  aion doctor            # verify your install")
     print("  aion example quickstart  # copy-paste SDK starter")

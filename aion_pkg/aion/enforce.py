@@ -13,7 +13,7 @@ def enforce(jti, scope):
 
         if "error" in result:
             log("ENFORCE_DENY", result)
-            logger.warning(f"Enforcement denied: {jti} — {result['error']}")
+            logger.warning(f"Enforcement denied: {jti} - {result['error']}")
             return {"error": "ENFORCEMENT_DENIED", "reason": result}
 
         log("ENFORCE_ALLOW", result)

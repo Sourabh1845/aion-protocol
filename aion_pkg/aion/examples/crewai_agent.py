@@ -2,7 +2,7 @@
 
 Requires: pip install crewai
 
-Same pattern as LangChain — wrap tool logic with @guard and route
+Same pattern as LangChain - wrap tool logic with @guard and route
 payments through a signed mandate. CrewAI BaseTool subclasses get the
 same protection by calling guard-wrapped functions inside _run().
 """

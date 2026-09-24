@@ -1,4 +1,4 @@
-"""AION PAYMENT RAILS — Rogue Agent Attack Demo
+"""AION PAYMENT RAILS - Rogue Agent Attack Demo
 
 Question: Can an autonomous agent steal money?
 Answer:   Watch it fail. Every attack blocked + every tamper detected.
@@ -30,7 +30,7 @@ results = []
 def log(test_name, expected, actual, passed):
     status = "PASS" if passed else "FAIL"
     results.append({"test": test_name, "expected": expected, "actual": actual, "status": status})
-    marker = "✓" if passed else "✗"
+    marker = "OK" if passed else "x"
     print(f"  [{status}] {marker} {test_name}")
     print(f"         Expected : {expected}")
     print(f"         Got      : {actual}")
@@ -43,7 +43,7 @@ def dollars(cents):
 
 def banner():
     print("\n" + "=" * 65)
-    print("  AION PAYMENT RAILS — ROGUE AGENT ATTACK DEMO")
+    print("  AION PAYMENT RAILS - ROGUE AGENT ATTACK DEMO")
     print("  'Can an AI agent steal money? Watch it fail.'")
     print("=" * 65 + "\n")
 
@@ -106,19 +106,19 @@ def scene_2_rogue_attacks(mandate):
 
     mid = mandate["mandate_id"]
 
-    # Attack 2.1 — payee swap: money to attacker wallet
+    # Attack 2.1 - payee swap: money to attacker wallet
     r = authorize_payment(mid, "agent:shopbot", 400, "attacker:0xdead")
     log("2.1  Redirect payment to attacker wallet",
         "PAYEE_NOT_ALLOWED (allowlist violation)",
         str(r.get("error", r)), r.get("error") == "PAYEE_NOT_ALLOWED")
 
-    # Attack 2.2 — inflate amount beyond per-payment cap
+    # Attack 2.2 - inflate amount beyond per-payment cap
     r = authorize_payment(mid, "agent:shopbot", 10000, "api:bookstore")
     log("2.2  Inflate single payment to $100.00",
         "AMOUNT_LIMIT (per-payment cap $5.00)",
         str(r.get("error", r)), r.get("error") == "AMOUNT_LIMIT")
 
-    # Attack 2.3 — budget drain (two-step: burn budget on a legit-looking
+    # Attack 2.3 - budget drain (two-step: burn budget on a legit-looking
     # purchase, then try to overspend what's left)
     r = authorize_payment(mid, "agent:shopbot", 500, "api:bookstore")
     step_a = r.get("status") == "AUTHORIZED"
@@ -128,13 +128,13 @@ def scene_2_rogue_attacks(mandate):
         f"step1={'AUTHORIZED' if step_a else r.get('error')} -> step2={r.get('error', r)}",
         step_a and r.get("error") == "BUDGET_EXHAUSTED")
 
-    # Attack 2.4 — impersonate another agent on the same mandate
+    # Attack 2.4 - impersonate another agent on the same mandate
     r = authorize_payment(mid, "agent:rogue", 100, "api:bookstore")
     log("2.4  Rogue process impersonates the mandate's agent",
         "AGENT_MISMATCH",
         str(r.get("error", r)), r.get("error") == "AGENT_MISMATCH")
 
-    # Attack 2.5 — fake/unknown mandate id
+    # Attack 2.5 - fake/unknown mandate id
     r = authorize_payment("00000000-0000-0000-0000-000000000000", "agent:shopbot", 100, "api:bookstore")
     log("2.5  Forge a mandate_id out of thin air",
         "MANDATE_NOT_FOUND",
@@ -142,13 +142,13 @@ def scene_2_rogue_attacks(mandate):
 
 
 def scene_3_tamper_detection(mandate):
-    print("── SCENE 3: The Insider — direct database tamper ────────────\n")
+    print("── SCENE 3: The Insider - direct database tamper ────────────\n")
     print("  Rogue process authorizes a $1.00 payment, then edits the")
     print("  ledger directly: $1.00 -> $99.99. Can it settle?\n")
 
     mid = mandate["mandate_id"]
 
-    # Fresh UNSETTLED payment — budget: $8 spent, $2 left, asks $1 (legal)
+    # Fresh UNSETTLED payment - budget: $8 spent, $2 left, asks $1 (legal)
     fresh = authorize_payment(mid, "agent:shopbot", 100, "api:bookstore")
     if "error" in fresh:
         log("3.0  Fresh payment for tamper scenario", "AUTHORIZED", str(fresh), False)
@@ -178,7 +178,7 @@ def scene_3_tamper_detection(mandate):
 
 
 def scene_4_dispute_bundle(mandate):
-    print("── SCENE 4: The Evidence — dispute bundle for the court ─────\n")
+    print("── SCENE 4: The Evidence - dispute bundle for the court ─────\n")
 
     bundle = export_dispute_bundle(mandate["mandate_id"])
     if "error" in bundle:
@@ -203,7 +203,7 @@ def scene_4_dispute_bundle(mandate):
         amt = dollars(p["amount"])
         verdict = "TAMPERED" if not p["binding_valid"] else p["status"]
         print(f"  │ Payment   : {p['jti'][:8]}... {amt:>7} -> {p['payee']}  [{verdict}]")
-    print(f"  │ Chain     : {'INTACT' if bundle['chain_intact'] else 'BROKEN — tampering detected'}")
+    print(f"  │ Chain     : {'INTACT' if bundle['chain_intact'] else 'BROKEN - tampering detected'}")
     print(f"  │ Evidence  : bundle_hash={bundle['bundle_hash'][:24]}...")
     print("  └──────────────────────────────────────────────────────────\n")
 
@@ -220,13 +220,13 @@ def final_report():
     print(f"  Score        : {passed}/{total}")
 
     if passed == total:
-        print("\n  ✓ Every attack blocked. Every tamper detected. Money stayed safe.")
-        print("  ✓ No prompt could do this — this is cryptography, not policy.")
+        print("\n  OK Every attack blocked. Every tamper detected. Money stayed safe.")
+        print("  OK No prompt could do this - this is cryptography, not policy.")
     else:
-        print("\n  ✗ Some checks failed:")
+        print("\n  x Some checks failed:")
         for r in results:
             if r["status"] == "FAIL":
-                print(f"    ✗ {r['test']} — got {r['actual']}")
+                print(f"    x {r['test']} - got {r['actual']}")
     print("\n" + "=" * 65 + "\n")
 
 

@@ -37,7 +37,7 @@ def test_payment_lifecycle():
     assert mandate["signature"]
     assert mandate["spent"] == 0
 
-    # Agent ne payment maanga — authorize hona chahiye
+    # Agent ne payment maanga - authorize hona chahiye
     auth = authorize_payment(mandate["mandate_id"], "agent:shopbot", 300, "api:weather")
     assert "error" not in auth, auth
     assert auth["status"] == "AUTHORIZED"
@@ -50,7 +50,7 @@ def test_payment_lifecycle():
     assert fresh["spent"] == 300
     assert fresh["payments_count"] == 1
 
-    # Settlement — proof attach hona chahiye
+    # Settlement - proof attach hona chahiye
     result = settle_payment(auth["jti"], "x402:tx_0xabc123")
     assert result["status"] == "SETTLED", result
     assert result["receipt_hash"]
@@ -73,7 +73,7 @@ def test_replay_settlement_blocked():
     first = settle_payment(auth["jti"], "x402:tx_1")
     assert first["status"] == "SETTLED"
 
-    # Doosri baar same auth settle karna — block hona chahiye (double-spend)
+    # Doosri baar same auth settle karna - block hona chahiye (double-spend)
     replay = settle_payment(auth["jti"], "x402:tx_2")
     assert replay["error"] == "ALREADY_SETTLED"
     print("Replay settlement test PASSED")
@@ -104,7 +104,7 @@ def test_budget_exhausted():
     assert "error" not in a1
     assert "error" not in a2
 
-    # Total 800 ho gaya — ab 300 aur nahi chalega
+    # Total 800 ho gaya - ab 300 aur nahi chalega
     a3 = authorize_payment(mandate["mandate_id"], "agent:shopbot", 300, "api:weather")
     assert a3["error"] == "BUDGET_EXHAUSTED"
 
@@ -151,7 +151,7 @@ def test_chain_verification_intact():
         auth = authorize_payment(mandate["mandate_id"], "agent:shopbot", 200, payee)
         assert "error" not in auth
 
-    # Sab payments chain mein linked hain — chain intact honi chahiye
+    # Sab payments chain mein linked hain - chain intact honi chahiye
     assert verify_payment_chain(mandate["mandate_id"]) is True
     print("Chain integrity test PASSED")
 

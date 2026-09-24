@@ -37,7 +37,7 @@ def generate_keys():
 
 def load_keys():
     if not PRIVATE_KEY_FILE.exists():
-        print("Keys not found — generating new keys locally")
+        print("Keys not found - generating new keys locally")
         return generate_keys()
     private_key = serialization.load_pem_private_key(
         PRIVATE_KEY_FILE.read_bytes(),

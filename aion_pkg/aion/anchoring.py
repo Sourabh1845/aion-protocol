@@ -1,15 +1,15 @@
 """External anchoring for AION receipt chains.
 
 A locally hash-chained payment history is tamper-EVIDENT, but the operator
-still holds the store — a determined insider could rewrite the whole chain.
+still holds the store - a determined insider could rewrite the whole chain.
 External anchoring closes that gap: periodically publish a compact chain
 ROOT (the final chain hash + length) to a location the operator does not
-control — a git commit, a gist, a cloud endpoint, a shared drive.
+control - a git commit, a gist, a cloud endpoint, a shared drive.
 
 Later, anyone can independently confirm:
   - the chain was intact at anchor time  (root matched then)
   - nothing changed since anchor        (recompute + compare)
-  - or exactly that it DID change       (MODIFIED_SINCE_ANCHOR — audit signal)
+  - or exactly that it DID change       (MODIFIED_SINCE_ANCHOR - audit signal)
 
 Records are JSONL so a git diff of the anchor file doubles as an
 append-only, human-reviewable compliance ledger.
@@ -165,7 +165,7 @@ def verify_against_published_root(mandate_id, anchor_file=None):
         "current_root": current["root"],
         "current_length": current["length"],
         "anchored_at": anchor["anchored_at"],
-        "detail": "chain changed after the last published root — re-anchor or audit the delta",
+        "detail": "chain changed after the last published root - re-anchor or audit the delta",
     }
 
 
